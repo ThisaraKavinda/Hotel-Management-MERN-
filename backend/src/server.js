@@ -1,48 +1,40 @@
-const express =  require("express");
-const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
-const cors = require("cors");
-const dotenv = require("dotenv");
-const app = express();
-const session = require("express-session");
-const cookieParser = require("cookie-parser");
-require("dotenv").config();
+import express from 'express';
+import mongoose from 'mongoose';
+import cors from 'cors';
+import bodyParser from 'body-parser';
+import * as dotenv from 'dotenv';
 
-const PORT = process.env.PORT || 8090;
-
-app.use(cors());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-
+// Constants
+dotenv.config()
 const URL=process.env.MONGODB_URL;
+const PORT = process.env.PORT || 8060
+const app = express()
 
-mongoose.connect(URL,{
-  
-   useNewUrlParser:true,
-   useUnifiedTopology:true,
-
-}); 
-
-const connection = mongoose.connection;
-
-connection.once("open",()=>{
-    console.log("MongoDB Connected");
-});
-
-//Creating A Session
-const oneDay = 1000 * 60 * 60 * 24;
-
-//session middleware
-app.use(session({
-    secret: "thisismysecrctekeyfhrgfgrfrty84fwir767",
-    saveUninitialized:true,
-    cookie: { maxAge: oneDay },
-    resave: false
-}));
+app.use(cors())
+app.use(bodyParser.json({ limit: '30mb', extended: true }))
+app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }))
 
 
-app.listen(PORT,()=>{
-    console.log(`Server is up and running on port ${PORT}`);
+mongoose.connect(URL, {
+    useUnifiedTopology: true
 })
 
+const connection = mongoose.connection
+connection.once("open", () => {
+    console.log("mongo_db connection success!")
+})
+
+
+// Routers
+import customerRouter from './routes/Customer.js';
+import reservationRouter from './routes/Reservation.js';
+import roomRouter from './routes/room.js';
+
+// Routers use
+app.use("/customer",customerRouter);
+app.use("/reservation", reservationRouter);
+app.use("/room", roomRouter);
+
+
+app.listen(PORT, () => console.log(`Server listening on port ${PORT}`))
 
