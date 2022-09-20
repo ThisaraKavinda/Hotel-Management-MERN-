@@ -29,11 +29,15 @@ connection.once("open", () => {
 import customerRouter from './routes/Customer.js';
 import reservationRouter from './routes/Reservation.js';
 import roomRouter from './routes/room.js';
+import houseKeeperRouter from './routes/houseKeeper.js';
+import vehicleRouter from './routes/vehicle.js';
 
 // Routers use
 app.use("/customer",customerRouter);
 app.use("/reservation", reservationRouter);
 app.use("/room", roomRouter);
+app.use("/houseKeeper", houseKeeperRouter);
+app.use("/vehicle", vehicleRouter);
 
 
 app.listen(PORT, () => console.log(`Server listening on port ${PORT}`))
