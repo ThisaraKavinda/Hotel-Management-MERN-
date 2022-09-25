@@ -12,6 +12,11 @@ import ReservationList from './views/reservation/ReservationList.js';
 import ViewReservation from './views/reservation/ViewReservation.js';
 import EditReservation from './views/reservation/EditReservation.js';
 
+import AddHouseKeeper from './views/houseKeeper/AddHouseKeeper.js';
+import HouseKeeperList from './views/houseKeeper/HouseKeeperList.js';
+import ViewHouseKeeper from './views/houseKeeper/ViewHouseKeeper.js';
+import EditHouseKeeper from './views/houseKeeper/EditHouseKeeper.js';
+
 
 function App() {
   return (
@@ -28,6 +33,11 @@ function App() {
         <Route exact path="/reservationList" element={<ReservationList />} />
         <Route exact path="/viewReservation/:id" element={<ViewReservation />} />
         <Route exact path="/editReservation/:id" element={<EditReservation />} />
+
+        <Route exact path="/addHouseKeeper" element={<AddHouseKeeper />} />
+        <Route exact path="/houseKeeperList" element={<HouseKeeperList/>} />
+        <Route exact path="/viewHouseKeeper/:id" element={<ViewHouseKeeper/>} />
+        <Route exact path="/editHouseKeeper/:id" element={<EditHouseKeeper/>} />
 
       </Routes>
     </BrowserRouter>

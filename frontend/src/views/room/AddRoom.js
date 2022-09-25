@@ -112,29 +112,29 @@ export default function AddRoom() {
                                     </div>
 
                                     <div class="row px-4 mb-2">
-                                            <div class="mb-3 col-md-6">
-                                                <label for="roomCode">Room Code</label>
-                                                <input type="text" class="form-control"name="roomCode" 
-                                                onChange={(e) => setRoomCode(e.target.value)} value={roomCode}/>
-                                            </div>
-                                            <div class="mb-3 col-md-6 mb-2 ml-2">
-                                                <label for="type">Type</label>
-                                                <Select
-                                                isClearable
-                                                isSearchable
-                                                options={
-                                                    [
-                                                        { value: 'Single', label: 'Single' },
-                                                        { value: 'Double', label: 'Double' },
-                                                        { value: 'Triple', label: 'Triple' },
-                                                        { value: 'Queen', label: 'Queen' },
-                                                        { value: 'Executive ', label: 'Executive' }
-                                                    ]
-                                                }
-                                                onChange={(e) => setType(e.value)}
-                                                />
-                                            </div>
+                                        <div class="mb-3 col-md-6">
+                                            <label for="roomCode">Room Code</label>
+                                            <input type="text" class="form-control"name="roomCode" 
+                                            onChange={(e) => setRoomCode(e.target.value)} value={roomCode}/>
                                         </div>
+                                        <div class="mb-3 col-md-6 mb-2 ml-2">
+                                            <label for="type">Type</label>
+                                            <Select
+                                            isClearable
+                                            isSearchable
+                                            options={
+                                                [
+                                                    { value: 'Single', label: 'Single' },
+                                                    { value: 'Double', label: 'Double' },
+                                                    { value: 'Triple', label: 'Triple' },
+                                                    { value: 'Queen', label: 'Queen' },
+                                                    { value: 'Executive ', label: 'Executive' }
+                                                ]
+                                            }
+                                            onChange={(e) => setType(e.value)}
+                                            />
+                                        </div>
+                                    </div>
 
                                         <div class="row px-4 d-flex justify-content-between mb-2">
                                             <div class="mb-3 col-md-6">

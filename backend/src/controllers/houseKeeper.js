@@ -4,11 +4,11 @@ export const addHouseKeeper = async (req, res) => {
     // console.log(req.body);
     const newHouseKeeper = new HouseKeeper({
         name: req.body.name,
-        dob: req.body.dob,
+        dob: req.body.dob.substring(0,10),
         gender: req.body.gender ,
         mobile: req.body.mobile , 
         address: req.body.address ,
-        joinedDate: req.body.joinedDate
+        joinedDate: req.body.joinedDate.substring(0,10)
     })
 
     newHouseKeeper = await newHouseKeeper.save().then((newHouseKeeper)=>{
