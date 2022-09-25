@@ -12,11 +12,12 @@ export const addReservation = async (req, res) => {
         state: req.body.state ,
         zipCode: req.body.zipCode ,
         email: req.body.email,
-        checkInDate: req.body.checkInDate ,
-        checkOutDate: req.body.checkOutDate ,
+        checkInDate: req.body.checkInDate.substring(0,10) ,
+        checkOutDate: req.body.checkOutDate.substring(0,10) ,
         roomType: req.body.roomType,
+        room: req.body.room,
         numOfAdults: req.body.numOfAdults ,
-        numOfChildren: req.body.numOfChildrens,
+        numOfChildren: req.body.numOfChildren,
     })
 
     newReservation = await newReservation.save().then((reservation)=>{
@@ -69,11 +70,12 @@ export const editReservation = async (req, res) => {
         state: req.body.state ,
         zipCode: req.body.zipCode ,
         email: req.body.email,
-        state: req.body.checkInDate ,
-        zipCode: req.body.checkOutDate ,
-        email: req.body.roomType,
-        zipCode: req.body.numOfAdults ,
-        email: req.body.numOfChildrens,
+        checkInDate: req.body.checkInDate.substring(0,10) ,
+        checkOutDate: req.body.checkOutDate.substring(0,10) ,
+        roomType: req.body.roomType,
+        room: req.body.room,
+        numOfAdults: req.body.numOfAdults ,
+        numOfChildren: req.body.numOfChildrens,
     };
 
     newReservation = await Reservation.findByIdAndUpdate(id, newReservation).then((newReservation) => {

@@ -41,14 +41,14 @@ export const getVehicle = async (req, res) => {
 export const editVehicle= async (req, res) => {
     let id = req.params.id;
     
-    let newVehicle = new Vehicle({
+    let newVehicle = {
         number: req.body.number,
         type: req.body.type,
         numOfSeats: req.body.numOfSeats ,
         driver: req.body.driver, 
         pricePerKM: req.body.pricePerKM ,
         isAvailable: req.body.isAvailable
-    })
+    }
 
     newVehicle = await Room.findByIdAndUpdate(id, newVehicle).then((newVehicle) => {
         res.status(200).send({status: "Vehicle Updated"})

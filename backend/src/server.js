@@ -7,7 +7,7 @@ import * as dotenv from 'dotenv';
 // Constants
 dotenv.config()
 const URL=process.env.MONGODB_URL;
-const PORT = process.env.PORT || 8060
+const PORT = process.env.PORT || 8061
 const app = express()
 
 app.use(cors())

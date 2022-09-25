@@ -41,14 +41,14 @@ export const getRoom = async (req, res) => {
 export const editRoom= async (req, res) => {
     let id = req.params.id;
     
-    let newRoom = new Room({
+    let newRoom = {
         name: req.body.name,
         type: req.body.type,
         price: req.body.price ,
         isAvailable: req.body.isAvailable , 
         isAc: req.body.isAc ,
         facilities: req.body.facilities
-    })
+    }
 
     newRoom = await Room.findByIdAndUpdate(id, newRoom).then((newRoom) => {
         res.status(200).send({status: "Room Updated"})

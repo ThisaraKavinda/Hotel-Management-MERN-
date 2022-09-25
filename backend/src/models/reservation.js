@@ -51,6 +51,10 @@ const reservationSchema = new Schema({
         type: String,
         required: true,
     },
+    room: {
+        type: String,
+        required: true,
+    },
     numOfAdults: {
         type: String,
         required: true,

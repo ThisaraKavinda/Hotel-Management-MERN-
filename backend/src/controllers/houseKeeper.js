@@ -41,14 +41,14 @@ export const getHouseKeeper = async (req, res) => {
 export const editHouseKeeper= async (req, res) => {
     let id = req.params.id;
     
-    let newHousekeeper = new HouseKeeper({
+    let newHousekeeper = {
         name: req.body.name,
         dob: req.body.dob,
         gender: req.body.gender ,
         mobile: req.body.mobile , 
         address: req.body.address ,
         joinedDate: req.body.joinedDate
-    })
+    }
 
     newHousekeeper = await HouseKeeper.findfindByIdAndUpdate(id, newHousekeeper).then((newHousekeeper) => {
         res.status(200).send({status: "HouseKeeper Updated"})

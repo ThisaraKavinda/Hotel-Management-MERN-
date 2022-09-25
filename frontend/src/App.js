@@ -1,24 +1,36 @@
-import logo from './logo.svg';
+import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import './App.css';
+
+import C_M_Dashboard from './views/reservation/Reservation_Dashboard';
+import AddRoom from './views/room/AddRoom'
+import RoomList from './views/room/RoomList.js'
+import EditRoom from './views/room/EditRoom.js'
+import ViewRoom from './views/room/ViewRoom.js'
+
+import AddReservation from './views/reservation/AddReservation.js';
+import ReservationList from './views/reservation/ReservationList.js';
+import ViewReservation from './views/reservation/ViewReservation.js';
+import EditReservation from './views/reservation/EditReservation.js';
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Routes>
+
+        <Route exact path="/" element={<C_M_Dashboard />} />
+        <Route exact path="/addRoom" element={<AddRoom />} />
+        <Route exact path="/roomList" element={<RoomList />} />
+        <Route exact path="/roomEdit/:id" element={<EditRoom />} />
+        <Route exact path="/viewRoom/:id" element={<ViewRoom />} />
+
+        <Route exact path="/addReservation" element={<AddReservation />} />
+        <Route exact path="/reservationList" element={<ReservationList />} />
+        <Route exact path="/viewReservation/:id" element={<ViewReservation />} />
+        <Route exact path="/editReservation/:id" element={<EditReservation />} />
+
+      </Routes>
+    </BrowserRouter>
   );
 }
 
