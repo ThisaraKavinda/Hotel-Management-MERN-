@@ -50,7 +50,7 @@ export const editHouseKeeper= async (req, res) => {
         joinedDate: req.body.joinedDate
     }
 
-    newHousekeeper = await HouseKeeper.findfindByIdAndUpdate(id, newHousekeeper).then((newHousekeeper) => {
+    newHousekeeper = await HouseKeeper.findByIdAndUpdate(id, newHousekeeper).then((newHousekeeper) => {
         res.status(200).send({status: "HouseKeeper Updated"})
     }).catch((err)=>{
         console.log(err);

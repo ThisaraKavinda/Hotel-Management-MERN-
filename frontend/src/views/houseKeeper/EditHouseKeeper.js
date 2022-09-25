@@ -33,8 +33,10 @@ export default function EditHouseKeeper() {
             setName(result.name);
             setGender(result.gender);
             setMobile(result.mobile);
+            setAddress(result.address);
 
             let dobArr = result.dob.split('-');
+            console.log(dobArr)
             setDob(new Date(dobArr[0], dobArr[1] -1, dobArr[2]));
             let joinedDateArr = result.joinedDate.split('-');
             setJoinedDate(new Date(joinedDateArr[0], joinedDateArr[1]-1, joinedDateArr[2]));
