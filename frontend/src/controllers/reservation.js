@@ -17,6 +17,11 @@ export const getSelectedReservation = async (id) => {
     return data;
 }
 
+export const getSelectedReservationByNic = async (nic) => {
+    const { data } = await axios.get(baseURL + '/reservation/getReservationByNic/' + nic);
+    return data;
+}
+
 export const deleteReservation = async (id) => {
     const { data } = await axios.get(baseURL + '/reservation/delete/' + id);
     return data;

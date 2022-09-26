@@ -2,7 +2,7 @@ import {Payment} from "../models/payment.js";
 
 export const addPayment = async (req, res) => {
     // console.log(req.body);
-    const newPayment = new Payment({
+    let newPayment = new Payment({
         reservationId: req.body.reservationId,
         customerName: req.body.customerName,
         phoneNumber: req.body.phoneNumber ,

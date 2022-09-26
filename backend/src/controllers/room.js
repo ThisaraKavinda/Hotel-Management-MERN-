@@ -38,6 +38,25 @@ export const getRoom = async (req, res) => {
     })
 }
 
+export const getAvailableRooms = async (req, res) => {
+    await Room.find({isAvaiable: true}).then((room)=>{
+        res.send(room);
+    }).catch((err)=>{
+        console.log(err);
+        res.status(500).send({status:"Error with retrieving data",error:err.message})
+    })
+}
+
+export const getSelectedTypeAvailableRooms = async (req, res) => {
+    let type = req.params.type;
+    await Room.find({isAvaiable: true, type: type}).then((room)=>{
+        res.send(room);
+    }).catch((err)=>{
+        console.log(err);
+        res.status(500).send({status:"Error with retrieving data",error:err.message})
+    })
+}
+
 export const editRoom= async (req, res) => {
     let id = req.params.id;
     

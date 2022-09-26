@@ -5,7 +5,8 @@ import Switch from "react-switch";
 import swal from "sweetalert";
 import DatePicker from "react-datepicker";
 
-import {addReservation} from '../../controllers/reservation.js';
+import {addReservation, getSelectedReservationByNic} from '../../controllers/reservation.js';
+import {getAvailableRooms, getSelectedTypeAvailableRooms} from '../../controllers/room.js';
 
 import Navbar from '../../components/Reservation_Navbar';
 import '../../css/modern.css';
@@ -34,25 +35,42 @@ export default function AddReservation() {
     const [endDate, setEndDate] = useState(new Date());
     const [today, setToday] = useState(new Date());
 
+    const [rooms, setRooms] = useState([]);
+
     const onAddReservation = () => {
         if (name == "" && nic == "" && phoneNumber == "" && addressLine1 == "" && addressLne2 == "" && city == "" &&
          state == "" && zipCode == "" && email == "" && roomType == "" && room == "" && numOfAdults == "" && numOfChildren == "") {
             swal("Please fill the from to proceed")
-        }
-        
-        // else if (roomCode == "") {
-        //     swal("Please enter a room code")
-        // } else if (type == "") {
-        //     swal("Please select a type")
-        // }else if (price == "" || isNaN(price)) {
-        //     swal("Please enter a valid price")
-        // } else if (facilities == "") {
-        //     swal("Please enter facilities")
-        // } 
-        
-        
-        else {
-            const newItem = {
+        } else if (nic == "") {
+            swal("Please enter the NIC")
+        } else if (name == "") {
+            swal("Please enter the name")
+        } else if (phoneNumber == "") {
+            swal("Please enter the Contact Number")
+        }else if (phoneNumber.length < 9) {
+            swal("Please enter a valid Number")
+        }else if (addressLine1 == "") {
+            swal("Please enter the Address Line 1")
+        } else if (city == "") {
+            swal("Please enter the city")
+        } else if (state == "") {
+            swal("Please enter the State")
+        } else if (zipCode == "") {
+            swal("Please enter the Zip Code")
+        } else if (email == "") {
+            swal("Please enter the Email")
+        }else if (!validateEmail(email)) {
+            swal("Please enter a valid Email")
+        }else if (roomType == "") {
+            swal("Please select the room type")
+        } else if (room == "") {
+            swal("Please select a availale room")
+        } else if (numOfChildren !== "" && isNaN(numOfChildren)) {
+            swal("Please a valid number for number of childern")
+        } else if (numOfAdults !== "" && isNaN(numOfAdults)) {
+            swal("Please a valid number for number of adults")
+        } else {   
+            let newItem = {
                 name: name,
                 nic: nic,
                 phoneNumber: phoneNumber,
@@ -69,6 +87,15 @@ export default function AddReservation() {
                 numOfAdults: numOfAdults,
                 numOfChildren: numOfChildren
             }
+            if (numOfAdults == "") 
+                newItem.numOfAdults= "0"
+            else
+                newItem.numOfAdults= numOfAdults
+            if (numOfChildren == "") 
+                newItem.numOfChildren= "0"
+            else
+                newItem.numOfChildren= numOfChildren
+            console.log(newItem);
             addReservation(newItem)
             .then((result) => {
                 if (result != undefined) {
@@ -98,7 +125,7 @@ export default function AddReservation() {
                     button: true,
                 })
                 .then((reload) => {
-                    //window.location.reload();
+                    window.location.reload();
                 });
             })
         }
@@ -114,9 +141,51 @@ export default function AddReservation() {
         setZipCode("");
         setEmail("");
         setRoomType("");
+        setRooms([]);
+        setRoom("");
         setNumOfAdults("");
         setNumOfChildren("");
+        setStartDate(new Date());
+        setEndDate(new Date());
     }
+
+    const onChangeNic = (e) => {
+        setNic(e.target.value);
+        if (e.target.value !== "") {
+            getSelectedReservationByNic(e.target.value).then((result) => {
+                if(result) {
+                    setName(result.name);
+                    setPhoneNumber(result.phoneNumber);
+                    setAddressLine1(result.addressLine1);
+                    setAddressLne2(result.addressLne2);
+                    setCity(result.city)
+                    setState(result.state);
+                    setZipCode(result.zipCode);
+                    setEmail(result.email);
+                }
+            })
+        }
+    }
+
+    const onChangeRoomType = async (e) => {
+        setRoomType(e.value);
+        await getSelectedTypeAvailableRooms(e.value).then((result) => {
+            // console.log(result);
+            let roomsArr = [];
+            for (const room of result) {
+                roomsArr.push({value: room.name, label: room.name})
+            }
+            setRooms(roomsArr);
+        })
+    }
+
+    const validateEmail = (email) => {
+        return String(email)
+          .toLowerCase()
+          .match(
+            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+          );
+    };
 
 	return (
 
@@ -150,7 +219,7 @@ export default function AddReservation() {
                                         <div class="mb-3 col-md-6">
                                             <label for="roomCode">NIC</label>
                                             <input type="text" class="form-control"name="nic" 
-                                            onChange={(e) => setNic(e.target.value)} value={nic}/>
+                                            onChange={onChangeNic} value={nic}/>
                                         </div>
                                     </div>
 
@@ -229,7 +298,7 @@ export default function AddReservation() {
                                                 selected={endDate}
                                                 onChange={(date:Date) => setEndDate(date)}
                                                 className="form-control"
-                                                minDate={today}
+                                                minDate={startDate}
                                                 customInput={
                                                 <input
                                                     type="text"
@@ -256,7 +325,7 @@ export default function AddReservation() {
                                                     { value: 'Executive ', label: 'Executive' }
                                                 ]
                                             }
-                                            onChange={(e) => setRoomType(e.value)}
+                                            onChange={onChangeRoomType}
                                             />
                                         </div>
                                         <div class="mb-3 col-md-6 mb-2 ml-2">
@@ -264,15 +333,7 @@ export default function AddReservation() {
                                             <Select
                                             isClearable
                                             isSearchable
-                                            options={
-                                                [
-                                                    { value: 'Single', label: 'Single' },
-                                                    { value: 'Double', label: 'Double' },
-                                                    { value: 'Triple', label: 'Triple' },
-                                                    { value: 'Queen', label: 'Queen' },
-                                                    { value: 'Executive ', label: 'Executive' }
-                                                ]
-                                            }
+                                            options={rooms}
                                             onChange={(e) => setRoom(e.value)}
                                             />
                                         </div>

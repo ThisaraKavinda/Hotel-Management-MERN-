@@ -25,6 +25,16 @@ export const getSelectedRoom = async (id) => {
     return data;
 }
 
+export const getAvailableRooms = async () => {
+    const { data } = await axios.get(baseURL + '/room/getAvailableRooms/');
+    return data;
+}
+
+export const getSelectedTypeAvailableRooms = async (type) => {
+    const { data } = await axios.get(baseURL + '/room/getSelectedTypeAvailableRooms/' + type);
+    return data;
+}
+
 export const deleteRoom = async (id) => {
     const { data } = await axios.get(baseURL + '/room/delete/' + id);
     return data;
