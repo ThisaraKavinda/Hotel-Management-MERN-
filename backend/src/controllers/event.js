@@ -40,6 +40,17 @@ export const getEvent = async (req, res) => {
     })
 }
 
+export const getEventsForSelectedDateAndLocation = async (req, res) => {
+    const date = req.params.date;
+    const location = req.params.location; 
+    await Event.find({locationType: location, date: date}).then((event)=>{
+        res.send(event);
+    }).catch((err)=>{
+        console.log(err);
+        res.status(500).send({status:"Error with retrieving data",error:err.message})
+    })
+}
+
 export const editEvent = async (req, res) => {
     let id = req.params.id;
     

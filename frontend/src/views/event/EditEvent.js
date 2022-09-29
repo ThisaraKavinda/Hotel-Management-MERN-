@@ -1,21 +1,19 @@
 import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from "react-router-dom";
 
 import Select from 'react-select';
 import Switch from "react-switch";
 import swal from "sweetalert";
-import DatePicker from "react-datepicker";
-import TimePicker from 'react-time-picker';
 
-import {addEvent, getEventsForSelectedDateAndLocation} from '../../controllers/event';
+import {getSelectedEvent, editEvent} from '../../controllers/event'
 
 import Navbar from '../../components/Reservation_Navbar';
 import '../../css/modern.css';
 import '../../js/app.js';
 
-import "react-datepicker/dist/react-datepicker.css";
-import Form from "react-bootstrap/Form";
+export default function EditEvent() {
 
-export default function AddEvent() {
+    const { id } = useParams();
 
     const [type, setType] = useState("");
     const [customerName, setCustomerName] = useState("");
@@ -31,7 +29,41 @@ export default function AddEvent() {
 
     const today = new Date();
 
-    const onAddEvent = () => {
+    useEffect(() => {
+        getSelectedRoom(id).then((result) => {
+        console.log(result);
+        setRoomData(result);
+        setRoomCode(result.name);
+        setType(result.type);
+        setPrice(result.price);
+        setFacilities(result.facilities);
+        setIsAvailable(result.isAvailable);
+        setIsAc(result.isAc);
+        });
+    }, []);
+
+    const onChangeAvailability = () => {
+        setIsAvailable(!isAvailable);
+    }
+
+    const onChangeIsAc = () => {
+        setIsAc(!isAc);
+    }
+
+    const onReset = () => {
+        getSelectedRoom(id).then((result) => {
+            console.log(result);
+            setRoomData(result);
+            setRoomCode(result.name);
+            setType(result.type);
+            setPrice(result.price)
+            setFacilities(result.facilities);
+            setIsAvailable(result.isAvailable);
+            setIsAc(result.isAc);
+        });
+    }
+
+    const onEditRoom = () => {
         if (!available) {
             swal("First you have to check the availability for updated date and location")
             return;
@@ -65,12 +97,12 @@ export default function AddEvent() {
                 date: date.toISOString().substring(0, 10),
                 time: startTime + " - " + endTime
             }
-            addEvent(newItem)
+            editRoom(newItem, id)
             .then((result) => {
                 if (result != undefined) {
                     swal({
                         title: "Success!",
-                        text: "Event added successfully",
+                        text: "Room updated successfully",
                         icon: 'success',
                         timer: 2000,
                         button: false,
@@ -100,43 +132,13 @@ export default function AddEvent() {
         }
     }
 
-    const onReset = () => {
-        setType("");
-        setCustomerName("");
-        setPhoneNumber("");
-        setAddress("");
-        setTotalCount("");
-        setLocationType("");
-        setDate("");
-        setStartTime("");
-        setEndtime("");
-        setAvailable(false);
-    }
-
-    const locationArr = [
-        { value: 'Hall A', label: 'Hall A' },
-        { value: 'Hall B', label: 'Hall B' },
-        { value: 'Outdoor', label: 'Outdoor' }
+    const roomTypes = [
+        { value: 'Single', label: 'Single' },
+        { value: 'Double', label: 'Double' },
+        { value: 'Triple', label: 'Triple' },
+        { value: 'Queen', label: 'Queen' },
+        { value: 'Executive ', label: 'Executive' }
     ]
-
-    const onCheckAvailability = () => {
-        if (date == "") {
-            swal("Please select a date")
-        } else if (locationType == "") {
-            swal("Please select a location")
-        } else {
-            const dateString = date.toISOString();
-            console.log(dateString)
-            getEventsForSelectedDateAndLocation(dateString.substring(0,10), locationType).then((events) => {
-                console.log(events);
-                if (events.length <= 0) {
-                    setAvailable(true)
-                } else {
-                    swal("Cannot book an event for the selected date and location. Please try again with a different location")
-                }
-            })
-        } 
-    }
 
 	return (
 
@@ -153,7 +155,7 @@ export default function AddEvent() {
 
 						<div class="header">
 							<h1 class="header-title mt-1">
-								Event Management
+								Rooms Management
 							</h1>
 
 						</div>
@@ -163,7 +165,7 @@ export default function AddEvent() {
                                 <div class="card-body" >
 
                                     <div class="row mb-4">
-                                        <h5 class="fw-semibold fs-4">Submit the following form to add a new event</h5>
+                                        <h5 class="fw-semibold fs-4">Edit the following form to update the room details</h5>
                                     </div>
 
                                     <div class="row px-4 mb-2">
@@ -261,14 +263,14 @@ export default function AddEvent() {
                                             <input type="time" class="form-control" name="endTime" 
                                             onChange={(e) => setEndtime(e.target.value)} value={endTime} disabled={!available}/>
                                         </div>
-                                    </div>
+                                    </div>  
                                                                                           
                                     <div class="row d-flex justify-content-center mb-2 mt-5">
                                         <div class="col-5 d-flex justify-content-center">
-                                            <button class="btn btn-primary w-75 mx-5 py-2 fw-semibold" onClick={onAddEvent}>Add</button>
+                                            <button class="btn btn-primary w-75 mx-5 py-2 fw-semibold" onClick={onEditRoom}>Updated</button>
                                             <button class="btn btn-primary w-75 mx-3 py-2 fw-semibold"
                                                 style={{ backgroundColor: '#ffffff', borderColor: '#081E3D', color: '#081E3D', marginLeft: 10, width:75 }} 
-                                                onClick={onReset} >Reset</button>
+                                                onClick={onReset} >Cancel</button>
                                         </div>
                                     </div>
                                 </div>

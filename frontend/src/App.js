@@ -25,7 +25,12 @@ import EditPayment from './views/payment/EditPayment.js';
 import AddVehicle from './views/vehicle/AddVehicle.js'
 import ViewVehicle from './views/vehicle/ViewVehicle.js';
 import VehicleList from './views/vehicle/VehicleList.js';
-import EditVehicle from './views/vehicle/EditVehicle.js'
+import EditVehicle from './views/vehicle/EditVehicle.js';
+
+import AddEvent from './views/event/AddEvent.js';
+import EventList from './views/event/EventList.js';
+import ViewEvent from './views/event/ViewEvent.js';
+import EditEvent from './views/event/EditEvent.js';
 
 function App() {
   return (
@@ -57,6 +62,11 @@ function App() {
         <Route exact path="/vehicleList" element={<VehicleList/>} />
         <Route exact path="/viewVehicle/:id" element={<ViewVehicle/>} />
         <Route exact path="/editVehicle/:id" element={<EditVehicle/>} />
+
+        <Route exact path="/addEvent" element={<AddEvent/>} />
+        <Route exact path="/eventList" element={<EventList/>} />
+        <Route exact path="/viewEvent/:id" element={<ViewEvent/>} />
+        <Route exact path="/editEvent/:id" element={<EditEvent/>} />
 
       </Routes>
     </BrowserRouter>
