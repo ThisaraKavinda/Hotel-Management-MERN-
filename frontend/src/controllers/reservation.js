@@ -27,6 +27,11 @@ export const getReservationsInAGivenPeriod = async (checkInDate, checkOutDate) =
     return data;
 }
 
+export const getCurrentReservations = async () => {
+    const { data } = await axios.get(baseURL + '/reservation/getCurrentReservations');
+    return data;
+}
+
 export const deleteReservation = async (id) => {
     const { data } = await axios.get(baseURL + '/reservation/delete/' + id);
     return data;

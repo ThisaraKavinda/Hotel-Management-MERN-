@@ -76,6 +76,17 @@ export const getReservationsInAGivenPeriod = async (req, res) => {
     })
 }
 
+export const getCurrentReservations = async (req, res) => {
+    const date = new Date().toISOString();
+    // console.log(date)
+    await Reservation.find({"checkInDate": {$lte: date}, "checkOutDate" : {$gt: date}}).then((reservation)=>{
+        res.send(reservation);
+    }).catch((err)=>{
+        console.log(err);
+        res.status(500).send({status:"Error with retrieving data",error:err.message})
+    })
+}
+
 export const editReservation = async (req, res) => {
     let id = req.params.id;
     

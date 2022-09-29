@@ -53,7 +53,7 @@ export const getPaymentsByReservation = async (req, res) => {
 export const editPayment = async (req, res) => {
     let id = req.params.id;
     
-    const newPayment = {
+    let newPayment = {
         reservationId: req.body.reservationId,
         customerName: req.body.customerName,
         phoneNumber: req.body.phoneNumber ,

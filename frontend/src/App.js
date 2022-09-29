@@ -18,7 +18,9 @@ import ViewHouseKeeper from './views/houseKeeper/ViewHouseKeeper.js';
 import EditHouseKeeper from './views/houseKeeper/EditHouseKeeper.js';
 
 import AddPayment from './views/payment/AddPayment.js';
-
+import PaymentList from './views/payment/PaymentList.js';
+import ViewPayment from './views/payment/ViewPayment.js';
+import EditPayment from './views/payment/EditPayment.js';
 
 function App() {
   return (
@@ -42,6 +44,9 @@ function App() {
         <Route exact path="/editHouseKeeper/:id" element={<EditHouseKeeper/>} />
 
         <Route exact path="/addPayment" element={<AddPayment/>} />
+        <Route exact path="/paymentList" element={<PaymentList/>} />
+        <Route exact path="/viewPayment/:id" element={<ViewPayment/>} />
+        <Route exact path="/editPayement/:id" element={<EditPayment/>} />
 
       </Routes>
     </BrowserRouter>

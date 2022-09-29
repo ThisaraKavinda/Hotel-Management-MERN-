@@ -1,50 +1,71 @@
 import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from "react-router-dom";
 
 import Select from 'react-select';
 import Switch from "react-switch";
 import swal from "sweetalert";
 import DatePicker from "react-datepicker";
 
-import {addPayment} from '../../controllers/payment';
-import {getCurrentReservations} from '../../controllers/reservation';
+import {getSelectedPayment, editPayment} from '../../controllers/payment'
 
 import Navbar from '../../components/Reservation_Navbar';
 import '../../css/modern.css';
 import '../../js/app.js';
 
-import "react-datepicker/dist/react-datepicker.css";
-import Form from "react-bootstrap/Form";
+export default function EditPayment() {
 
-export default function AddPayment() {
+    const { id } = useParams();
 
+    const [reservationData, setReservationData] = useState({})
     const [reservationId, setReservationId] = useState("");
     const [customerName, setCustomerName] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
     const [type, setType] = useState("");
     const [details, setDetails] = useState("");
     const [price, setPrice] = useState("");
-    
-    const [customerNameArr, setCustomerNameArr] = useState([]);
-    const [reservations, setReservations] = useState([]);
-    const [selectedReservation, setSelectedReservation] = useState({});
-    const [customerNames, setCustomerNames] = useState([]);
+    const [time, setTime] = useState("");
+    const [date, setDate] = useState("");
 
     useEffect(() => {
-        getCurrentReservations().then((res) => {
-            console.log(res)
-            setReservations(res)
-            let customers = [];
-            let names = [];
-            for (const reservation of res) {
-                customers.push({ value: reservation.name, label: reservation.name + " - " + reservation.room + " (" + reservation.roomType + ")" }) 
-                names.push(reservation.name);
-            }
-            setCustomerNameArr(customers);
-            setCustomerNames(names);
-        })
-    }, [])
+        getSelectedPayment(id).then((result) => {
+            console.log(result);
+            setReservationData(result);
+            setReservationId(result.reservationId);
+            setCustomerName(result.customerName);
+            setPhoneNumber(result.phoneNumber);
+            setType(result.type);
+            setDetails(result.details);
+            setPrice(result.price);
+            setTime(result.time);
+            setDate(result.date);
+        });
+    }, []);
 
-    const onAddPayment = () => {
+    const typeOptionsArr = [
+        { value: 'Breakfast', label: 'Breakfast'},
+        { value: 'Lunch', label: 'Lunch'},
+        { value: 'Dinner', label: 'Dinner'},
+        { value: 'Other Foods', label: 'Other Foods'},
+        { value: 'Beverages', label: 'Beverages'},
+        { value: 'Dining', label: 'Dining'}
+    ]
+
+    const onReset = () => {
+        getSelectedPayment(id).then((result) => {
+            console.log(result);
+            setReservationData(result);
+            setReservationId(result.reservationId);
+            setCustomerName(result.customerName);
+            setPhoneNumber(result.phoneNumber);
+            setType(result.type);
+            setDetails(result.details);
+            setPrice(result.price);
+            setTime(result.time);
+            setDate(result.date);
+        });
+    }
+
+    const onEditPayment = () => {
         if (customerName == "" && type == "" && price =="") {
             swal("Please fill the form to add a payment")
         } else if (customerName == "") {
@@ -56,16 +77,6 @@ export default function AddPayment() {
         }else if (isNaN(price)) {
             swal("Please enter a valid amount for the payment")
         } else {
-            let dateTime = new Date();
-            let month = dateTime.getUTCMonth() + 1; //months from 1-12
-            if (month < 10)
-                month = "0" + month;
-            let day = dateTime.getUTCDate();
-            let year = dateTime.getUTCFullYear();
-            const date = year + "-" + month + "-" + day;
-            dateTime = dateTime.toTimeString();
-            const time = dateTime.split(' ')[0]
-            console.log(date + " " + time);
             const newItem = {
                 reservationId: reservationId,
                 customerName: customerName,
@@ -76,12 +87,12 @@ export default function AddPayment() {
                 date: date, 
                 time: time      
             }
-            addPayment(newItem)
+            editPayment(newItem, id)
             .then((result) => {
                 if (result != undefined) {
                     swal({
                         title: "Success!",
-                        text: "Payment added successfully",
+                        text: "Payment updated successfully",
                         icon: 'success',
                         timer: 2000,
                         button: false,
@@ -111,24 +122,6 @@ export default function AddPayment() {
         }
     }
 
-    const onReset = () => {
-        setReservationId("");
-        setCustomerName("");
-        setPhoneNumber("");
-        setType("");
-        setDetails("");
-        setPrice("");
-    }
-
-    const onChangeName = (e) => {
-        setCustomerName(e.value);
-        const index = customerNames.indexOf(e.value);
-        setSelectedReservation(reservations[index])
-        setReservationId(reservations[index]._id);
-        console.log(reservations[index]._id)
-        setPhoneNumber(reservations[index].phoneNumber)
-    }
-
 	return (
 
 		<div class="wrapper" style={{backgroundColor: 'transaprent'}}>
@@ -142,7 +135,7 @@ export default function AddPayment() {
 				<main class="content mt-3">
 					<div class="container-fluid">
 
-						<div class="header">
+                    <div class="header">
 							<h1 class="header-title mt-1">
 								Payment Management
 							</h1>
@@ -154,23 +147,19 @@ export default function AddPayment() {
                                 <div class="card-body" >
 
                                     <div class="row mb-4">
-                                        <h5 class="fw-semibold fs-4">Submit the following form to add a new payment</h5>
+                                        <h5 class="fw-semibold fs-4">Submit the following form to edit the payment</h5>
                                     </div>
 
                                     <div class="row px-4 mb-2">
                                         <div class="mb-3 col-md-6">
-                                            <label for="type">Reservation</label>
-                                            <Select
-                                            isClearable
-                                            isSearchable
-                                            options={customerNameArr}
-                                            onChange={onChangeName}
-                                            />
+                                            <label for="reservation">Reservation</label>
+                                            <input type="text" class="form-control"name="reservation" disabled={true}
+                                             value={customerName}/>
                                         </div>
                                         <div class="mb-3 col-md-6">
                                             <label for="phoneNumber">Phone Number</label>
                                             <input type="text" class="form-control"name="phoneNumber" disabled={true}
-                                            onChange={(e) => setPhoneNumber(e.target.value)} value={phoneNumber}/>
+                                            value={phoneNumber}/>
                                         </div>
                                     </div>
 
@@ -180,15 +169,12 @@ export default function AddPayment() {
                                             <Select
                                             isClearable
                                             isSearchable
-                                            options={[
-                                                { value: 'Breakfast', label: 'Breakfast'},
-                                                { value: 'Lunch', label: 'Lunch'},
-                                                { value: 'Dinner', label: 'Dinner'},
-                                                { value: 'Other Foods', label: 'Other Foods'},
-                                                { value: 'Beverages', label: 'Beverages'},
-                                                { value: 'Dining', label: 'Dining'}
-                                            ]}
+                                            options={typeOptionsArr}
                                             onChange={((e) => {setType(e.value)})}
+                                            value = {
+                                                typeOptionsArr.filter(option => 
+                                                   option.label === type)
+                                             }
                                             />
                                         </div>
                                         <div class="mb-3 col-md-6">
@@ -209,7 +195,7 @@ export default function AddPayment() {
                                                                                           
                                     <div class="row d-flex justify-content-center mb-2 mt-5">
                                         <div class="col-5 d-flex justify-content-center">
-                                            <button class="btn btn-primary w-75 mx-5 py-2 fw-semibold" onClick={onAddPayment}>Add</button>
+                                            <button class="btn btn-primary w-75 mx-5 py-2 fw-semibold" onClick={onEditPayment}>Update</button>
                                             <button class="btn btn-primary w-75 mx-3 py-2 fw-semibold"
                                                 style={{ backgroundColor: '#ffffff', borderColor: '#081E3D', color: '#081E3D', marginLeft: 10, width:75 }} 
                                                 onClick={onReset} >Reset</button>
