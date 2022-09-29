@@ -1,20 +1,21 @@
 import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from "react-router-dom";
 
 import Select from 'react-select';
 import Switch from "react-switch";
 import swal from "sweetalert";
-import DatePicker from "react-datepicker";
 
-import {addVehicle} from '../../controllers/vehicle';
+import {getSelectedVehicle, editVehicle} from '../../controllers/vehicle'
 
 import Navbar from '../../components/Reservation_Navbar';
 import '../../css/modern.css';
 import '../../js/app.js';
 
-import "react-datepicker/dist/react-datepicker.css";
-import Form from "react-bootstrap/Form";
+export default function EditVehicle() {
 
-export default function AddVehicle() {
+    const { id } = useParams();
+
+    const [vehicleData, setVehicleData] = useState({});
 
     const [number, setNumber] = useState("");
     const [type, setType] = useState("");
@@ -23,14 +24,37 @@ export default function AddVehicle() {
     const [pricePerKM, setPricePerKM] = useState("");
     const [isAvailable, setIsAvailable] = useState(true);
 
-    const vehicleTypeArr = [
-        { value: 'Bike', label: 'Bike'} ,
-        { value: 'Three Wheel', label: 'Three Wheel'} ,
-        { value: 'Car', label: 'Car'} ,
-        { value: 'Van', label: 'Van'} ,
-    ]
+    useEffect(() => {
+        getSelectedVehicle(id).then((result) => {
+            console.log(result);
+            setVehicleData(result);
+            setNumber(result.number);
+            setType(result.type);
+            setNumOfSeats(result.numOfSeats)
+            setDriver(result.driver);
+            setIsAvailable(result.isAvailable);
+            setPricePerKM(result.pricePerKM);
+        });
+    }, []);
 
-    const onAddVehicle = () => {
+    const onChangeAvailability = () => {
+        setIsAvailable(!isAvailable);
+    }
+
+    const onReset = () => {
+        getSelectedVehicle(id).then((result) => {
+            console.log(result);
+            setVehicleData(result);
+            setNumber(result.number);
+            setType(result.type);
+            setNumOfSeats(result.numOfSeats)
+            setDriver(result.driver);
+            setIsAvailable(result.isAvailable);
+            setPricePerKM(result.pricePerKM);
+        });
+    }
+
+    const onEditRoom = () => {
         if (number == "" && type == "" && numOfSeats =="" && driver == "" && pricePerKM == "") {
             swal("Please fill the form to add a payment")
         } else if (number == "") {
@@ -56,12 +80,12 @@ export default function AddVehicle() {
                 pricePerKM: pricePerKM,
                 isAvailable: isAvailable     
             }
-            addVehicle(newItem)
+            editVehicle(newItem, id)
             .then((result) => {
                 if (result != undefined) {
                     swal({
                         title: "Success!",
-                        text: "Vehicle added successfully",
+                        text: "Vehicle updated successfully",
                         icon: 'success',
                         timer: 2000,
                         button: false,
@@ -91,18 +115,12 @@ export default function AddVehicle() {
         }
     }
 
-    const onReset = () => {
-        setNumber("");
-        setType("");
-        setNumOfSeats("");
-        setDriver("");
-        setPricePerKM("");
-        setIsAvailable(true);
-    }
-
-    const onChangeAvailability = () => {
-        setIsAvailable(!isAvailable);
-    }
+    const vehicleTypeArr = [
+        { value: 'Bike', label: 'Bike'} ,
+        { value: 'Three Wheel', label: 'Three Wheel'} ,
+        { value: 'Car', label: 'Car'} ,
+        { value: 'Van', label: 'Van'} ,
+    ]
 
 	return (
 
@@ -129,27 +147,32 @@ export default function AddVehicle() {
                                 <div class="card-body" >
 
                                     <div class="row mb-4">
-                                        <h5 class="fw-semibold fs-4">Submit the following form to add a new vehicle</h5>
+                                        <h5 class="fw-semibold fs-4">Edit the following form to update the vehicle details</h5>
                                     </div>
 
                                     <div class="row px-4 mb-2">
-                                        <div class="mb-3 col-md-6">
-                                            <label for="number">Vehicle Number</label>
-                                            <input type="text" class="form-control" name="number"
-                                            onChange={(e) => setNumber(e.target.value)} value={number}/>
+                                            <div class="mb-3 col-md-6">
+                                                <label for="number">Vehicle Number</label>
+                                                <input type="text" class="form-control" name="number" 
+                                                onChange={(e) => setNumber(e.target.value)} value={number} disabled={true}/>
+                                            </div>
+                                            <div class="mb-3 col-md-6 mb-2 ml-2">
+                                                <label for="type">Vehicle Type</label>
+                                                <Select
+                                                isClearable
+                                                isSearchable
+                                                options={vehicleTypeArr}
+                                                value= {
+                                                    vehicleTypeArr.filter(option => 
+                                                       option.label === type)
+                                                 }
+                                                onChange={(e) => setType(e.value)}
+                                                isDisabled={true}
+                                                />
+                                            </div>
                                         </div>
-                                        <div class="mb-3 col-md-6">
-                                            <label for="type">Vehicle Type</label>
-                                            <Select
-                                            isClearable
-                                            isSearchable
-                                            options={vehicleTypeArr}
-                                            onChange={(e) => setType(e.value)}
-                                            />
-                                        </div>
-                                    </div>
 
-                                    <div class="row px-4 mb-2">
+                                        <div class="row px-4 mb-2">
                                         <div class="mb-3 col-md-6">
                                             <label for="numOfSeats">Number of seats</label>
                                             <input type="text" class="form-control" name="numOfSeats"
@@ -185,10 +208,10 @@ export default function AddVehicle() {
                                                                                           
                                     <div class="row d-flex justify-content-center mb-2 mt-5">
                                         <div class="col-5 d-flex justify-content-center">
-                                            <button class="btn btn-primary w-75 mx-5 py-2 fw-semibold" onClick={onAddVehicle}>Add</button>
+                                            <button class="btn btn-primary w-75 mx-5 py-2 fw-semibold" onClick={onEditRoom}>Updated</button>
                                             <button class="btn btn-primary w-75 mx-3 py-2 fw-semibold"
                                                 style={{ backgroundColor: '#ffffff', borderColor: '#081E3D', color: '#081E3D', marginLeft: 10, width:75 }} 
-                                                onClick={onReset} >Reset</button>
+                                                onClick={onReset} >Cancel</button>
                                         </div>
                                     </div>
                                 </div>

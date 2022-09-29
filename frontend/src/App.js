@@ -22,6 +22,11 @@ import PaymentList from './views/payment/PaymentList.js';
 import ViewPayment from './views/payment/ViewPayment.js';
 import EditPayment from './views/payment/EditPayment.js';
 
+import AddVehicle from './views/vehicle/AddVehicle.js'
+import ViewVehicle from './views/vehicle/ViewVehicle.js';
+import VehicleList from './views/vehicle/VehicleList.js';
+import EditVehicle from './views/vehicle/EditVehicle.js'
+
 function App() {
   return (
     <BrowserRouter>
@@ -47,6 +52,11 @@ function App() {
         <Route exact path="/paymentList" element={<PaymentList/>} />
         <Route exact path="/viewPayment/:id" element={<ViewPayment/>} />
         <Route exact path="/editPayement/:id" element={<EditPayment/>} />
+
+        <Route exact path="/addVehicle" element={<AddVehicle/>} />
+        <Route exact path="/vehicleList" element={<VehicleList/>} />
+        <Route exact path="/viewVehicle/:id" element={<ViewVehicle/>} />
+        <Route exact path="/editVehicle/:id" element={<EditVehicle/>} />
 
       </Routes>
     </BrowserRouter>

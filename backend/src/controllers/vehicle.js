@@ -50,7 +50,7 @@ export const editVehicle= async (req, res) => {
         isAvailable: req.body.isAvailable
     }
 
-    newVehicle = await Room.findByIdAndUpdate(id, newVehicle).then((newVehicle) => {
+    newVehicle = await Vehicle.findByIdAndUpdate(id, newVehicle).then((newVehicle) => {
         res.status(200).send({status: "Vehicle Updated"})
     }).catch((err)=>{
         console.log(err);
