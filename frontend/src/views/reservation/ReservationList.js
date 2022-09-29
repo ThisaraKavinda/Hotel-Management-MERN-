@@ -101,8 +101,8 @@ export default function ReservationList() {
                                             <tr key={index}>
                                                 <td>{value.name}</td>
                                                 <td>{value.phoneNumber}</td>
-                                                <td>{value.checkInDate}</td>
-                                                <td>{value.checkOutDate}</td>
+                                                <td>{value.checkInDate.substring(0,10)}</td>
+                                                <td>{value.checkOutDate.substring(0,10)}</td>
                                                 <td>{value.room}</td>
                                                 <td class="table-action">
                                                 <button

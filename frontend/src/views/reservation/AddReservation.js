@@ -5,7 +5,7 @@ import Switch from "react-switch";
 import swal from "sweetalert";
 import DatePicker from "react-datepicker";
 
-import {addReservation, getSelectedReservationByNic} from '../../controllers/reservation.js';
+import {addReservation, getSelectedReservationByNic, getReservationsInAGivenPeriod} from '../../controllers/reservation.js';
 import {getAvailableRooms, getSelectedTypeAvailableRooms} from '../../controllers/room.js';
 
 import Navbar from '../../components/Reservation_Navbar';
@@ -43,6 +43,8 @@ export default function AddReservation() {
             swal("Please fill the from to proceed")
         } else if (nic == "") {
             swal("Please enter the NIC")
+        }else if (nic.length < 11) {
+            swal("Please enter a valid NIC number")
         } else if (name == "") {
             swal("Please enter the name")
         } else if (phoneNumber == "") {
@@ -169,13 +171,40 @@ export default function AddReservation() {
 
     const onChangeRoomType = async (e) => {
         setRoomType(e.value);
-        await getSelectedTypeAvailableRooms(e.value).then((result) => {
-            // console.log(result);
-            let roomsArr = [];
+        setRoom("");
+        checkForAvailableRooms(e.value);
+    }
+
+    const checkForAvailableRooms = async (type) => {
+        let roomsArr = [];
+        let optionArr = [];
+        await getSelectedTypeAvailableRooms(type).then((result) => {
+            // console.log(result);           
             for (const room of result) {
-                roomsArr.push({value: room.name, label: room.name})
+                roomsArr.push(room.name)
             }
-            setRooms(roomsArr);
+        })
+        await getReservationsInAGivenPeriod(startDate, endDate).then((result) => {
+            // console.log(result);
+            if (result.length > 0) {
+                for (const reservation of result) {
+                    // console.log(reservation.room)
+                    // console.log(roomsArr)
+                    const index = roomsArr.indexOf(reservation.room);
+                    // console.log(index)
+                    if (index > -1) { // only splice array when item is found
+                        roomsArr.splice(index, 1); // 2nd parameter means remove one item only
+                    }
+                }  
+            }  
+            
+            for (let room of roomsArr) {
+                optionArr.push({ value: room, label: room })
+            }  
+            if (optionArr.length < 1) {
+                swal("No " + type + " rooms avaiable for the selected time period")
+            }
+            setRooms(optionArr); 
         })
     }
 
@@ -280,7 +309,7 @@ export default function AddReservation() {
                                             <label for="zipCode">Check In Date</label>
                                             <DatePicker
                                                 selected={startDate}
-                                                onChange={(date:Date) => setStartDate(date)}
+                                                onChange={(date:Date) => {setStartDate(date); checkForAvailableRooms(roomType); setRoom("");}}
                                                 className="form-control"
                                                 minDate={today}
                                                 customInput={
@@ -296,7 +325,7 @@ export default function AddReservation() {
                                             <label for="email">Check Out Date</label>
                                             <DatePicker
                                                 selected={endDate}
-                                                onChange={(date:Date) => setEndDate(date)}
+                                                onChange={(date:Date) => {setEndDate(date); checkForAvailableRooms(roomType); setRoom("");}}
                                                 className="form-control"
                                                 minDate={startDate}
                                                 customInput={

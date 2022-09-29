@@ -2,7 +2,7 @@ import {Reservation} from "../models/reservation.js";
 
 export const addReservation = async (req, res) => {
     // console.log(req.body);
-    const newReservation = new Reservation({
+    let newReservation = new Reservation({
         name: req.body.name,
         nic: req.body.nic,
         phoneNumber: req.body.phoneNumber ,
@@ -12,8 +12,8 @@ export const addReservation = async (req, res) => {
         state: req.body.state ,
         zipCode: req.body.zipCode ,
         email: req.body.email,
-        checkInDate: req.body.checkInDate.substring(0,10) ,
-        checkOutDate: req.body.checkOutDate.substring(0,10) ,
+        checkInDate: req.body.checkInDate,
+        checkOutDate: req.body.checkOutDate ,
         roomType: req.body.roomType,
         room: req.body.room,
         numOfAdults: req.body.numOfAdults ,
@@ -57,6 +57,25 @@ export const getReservationById = async (req, res) => {
     })
 }
 
+export const getReservationsInAGivenPeriod = async (req, res) => {
+    let checkInDate = req.params.checkInDate;
+    let checkOutDate = req.params.CheckOutDate;
+    // console.log(checkOutDate)
+    // console.log(req.params)
+    // let dateStartArr = checkInDate.substring(0,10).split('-');
+    // let dateEndArr = checkOutDate.substring(0,10).split('-');
+
+    await Reservation.find({$or:[{"checkInDate": {$lt: checkInDate}, "checkOutDate" : {$gte: checkInDate}}, 
+        { "checkInDate": {$gte: checkInDate}, "checkOutDate" : {$lte: checkOutDate} },
+        {"checkInDate": {$lte: checkOutDate}, "checkOutDate" : {$gte: checkOutDate} },
+    ]}).then((reservation)=>{
+        res.send(reservation);
+    }).catch((err)=>{
+        console.log(err);
+        res.status(500).send({status:"Error with retrieving data",error:err.message})
+    })
+}
+
 export const editReservation = async (req, res) => {
     let id = req.params.id;
     
@@ -70,8 +89,8 @@ export const editReservation = async (req, res) => {
         state: req.body.state ,
         zipCode: req.body.zipCode ,
         email: req.body.email,
-        checkInDate: req.body.checkInDate.substring(0,10) ,
-        checkOutDate: req.body.checkOutDate.substring(0,10) ,
+        checkInDate: req.body.checkInDate ,
+        checkOutDate: req.body.checkOutDate ,
         roomType: req.body.roomType,
         room: req.body.room,
         numOfAdults: req.body.numOfAdults ,

@@ -24,24 +24,21 @@ export default function AddHouseKeeper() {
     const [address, setAddress] = useState("");
 
     const onAddReservation = () => {
-        // if (name == "" && nic == "" && phoneNumber == "" && addressLine1 == "" && addressLne2 == "" && city == "" &&
-        //  state == "" && zipCode == "" && email == "" && roomType == "" && room == "" && numOfAdults == "" && numOfChildren == "") {
-        //     swal("Please fill the from to proceed")
-        // }
-        
-        // else if (roomCode == "") {
-        //     swal("Please enter a room code")
-        // } else if (type == "") {
-        //     swal("Please select a type")
-        // }else if (price == "" || isNaN(price)) {
-        //     swal("Please enter a valid price")
-        // } else if (facilities == "") {
-        //     swal("Please enter facilities")
-        // } 
-        
-        
-        // else 
-        {
+        if (name == "" && gender == "" && mobile == "" && address == "") {
+            swal("Please fill the form to add a house keeper")
+        } else if (name == "") {
+            swal("Please enter the name")
+        }else if (dob == "") {
+            swal("Please enter the date of birth")
+        }else if (gender == "") {
+            swal("Please enter the gender")
+        }else if (mobile == "") {
+            swal("Please enter the mobile number")
+        }else if (mobile.length < 10) {
+            swal("Please enter a valid mobile number")
+        }else if (address == "") {
+            swal("Please enter the address")
+        } else {
             const newItem = {
                 name: name,
                 dob: dob,
@@ -80,13 +77,18 @@ export default function AddHouseKeeper() {
                     button: true,
                 })
                 .then((reload) => {
-                    //window.location.reload();
+                    window.location.reload();
                 });
             })
         }
     }
 
     const onReset = () => {
+        setName("");
+        setDob("");
+        setGender("");
+        setMobile("");
+        setAddress("");
     }
 
 	return (

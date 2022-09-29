@@ -58,7 +58,7 @@ export default function ViewReservation() {
 									<div class="column" >
 									<center><Link
 												to={"/reservationList"}
-												class="top-bar-link"
+												class="top-bar-link px-5"
 											>
 												<button
 												class="btn btn-pill btn-success btn-sm"
@@ -109,11 +109,11 @@ export default function ViewReservation() {
 											</tr>
                                             <tr>
 												<th>Check In Date</th>
-												<td>{reservationData.checkInDate}</td>
+												<td>{reservationData.checkInDate === undefined ? null : reservationData.checkInDate.substring(0,10)}</td>
 											</tr>
                                             <tr>
 												<th>Check Out Date</th>
-												<td>{reservationData.checkOutDate}</td>
+												<td>{reservationData.checkOutDate === undefined ? null : reservationData.checkOutDate.substring(0,10)}</td>
 											</tr>
                                             <tr>
 												<th>Room Type</th>
