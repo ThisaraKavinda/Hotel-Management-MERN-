@@ -35,6 +35,11 @@ export const getSelectedTypeAvailableRooms = async (type) => {
     return data;
 }
 
+export const getSelectedRoomByCode = async (name) => {
+    const { data } = await axios.get(baseURL + '/room/getSelectedRoomByCode/' + name);
+    return data;
+}
+
 export const deleteRoom = async (id) => {
     const { data } = await axios.get(baseURL + '/room/delete/' + id);
     return data;

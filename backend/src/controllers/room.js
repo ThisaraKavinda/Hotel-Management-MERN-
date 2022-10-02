@@ -57,6 +57,16 @@ export const getSelectedTypeAvailableRooms = async (req, res) => {
     })
 }
 
+export const getSelectedRoomByCode = async (req, res) => {
+    let name = req.params.name;
+    await Room.find({name: name}).then((room)=>{
+        res.send(room);
+    }).catch((err)=>{
+        console.log(err);
+        res.status(500).send({status:"Error with retrieving data",error:err.message})
+    })
+}
+
 export const editRoom= async (req, res) => {
     let id = req.params.id;
     

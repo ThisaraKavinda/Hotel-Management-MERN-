@@ -147,7 +147,7 @@ export default function EditPayment() {
                                 <div class="card-body" >
 
                                     <div class="row mb-4">
-                                        <h5 class="fw-semibold fs-4">Submit the following form to edit the payment</h5>
+                                        <h5 class="fw-semibold fs-4">EDIT PAYMENT</h5>
                                     </div>
 
                                     <div class="row px-4 mb-2">

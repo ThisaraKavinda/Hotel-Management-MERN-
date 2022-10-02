@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
 
 import Select from 'react-select';
 import Switch from "react-switch";
@@ -16,6 +17,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import Form from "react-bootstrap/Form";
 
 export default function AddEvent() {
+
+    const navigate = useNavigate();
 
     const [type, setType] = useState("");
     const [customerName, setCustomerName] = useState("");
@@ -75,6 +78,7 @@ export default function AddEvent() {
                         timer: 2000,
                         button: false,
                     });
+                    navigate("/eventList")
                 } else {
                     swal({
                         title: "Error!",
@@ -163,7 +167,7 @@ export default function AddEvent() {
                                 <div class="card-body" >
 
                                     <div class="row mb-4">
-                                        <h5 class="fw-semibold fs-4">Submit the following form to add a new event</h5>
+                                        <h5 class="fw-semibold fs-4">ADD NEW EVENT</h5>
                                     </div>
 
                                     <div class="row px-4 mb-2">

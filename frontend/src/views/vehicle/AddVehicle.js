@@ -5,7 +5,7 @@ import Switch from "react-switch";
 import swal from "sweetalert";
 import DatePicker from "react-datepicker";
 
-import {addVehicle} from '../../controllers/vehicle';
+import {addVehicle, getSelectedVehicleByNumber} from '../../controllers/vehicle';
 
 import Navbar from '../../components/Reservation_Navbar';
 import '../../css/modern.css';
@@ -23,6 +23,8 @@ export default function AddVehicle() {
     const [pricePerKM, setPricePerKM] = useState("");
     const [isAvailable, setIsAvailable] = useState(true);
 
+    const [canGoForward, setCanGoForward] = useState(false);
+
     const vehicleTypeArr = [
         { value: 'Bike', label: 'Bike'} ,
         { value: 'Three Wheel', label: 'Three Wheel'} ,
@@ -31,7 +33,9 @@ export default function AddVehicle() {
     ]
 
     const onAddVehicle = () => {
-        if (number == "" && type == "" && numOfSeats =="" && driver == "" && pricePerKM == "") {
+        if (!canGoForward) {
+            swal("Vehicle already available in the system")
+        } else if (number == "" && type == "" && numOfSeats =="" && driver == "" && pricePerKM == "") {
             swal("Please fill the form to add a payment")
         } else if (number == "") {
             swal("Please enter the vehicle number")
@@ -104,6 +108,18 @@ export default function AddVehicle() {
         setIsAvailable(!isAvailable);
     }
 
+    const onChangeNumber = (e) => {
+        setNumber(e.target.value);
+        getSelectedVehicleByNumber(e.target.value).then((res) => {
+            console.log(res)
+            if (res.length <= 0) {
+                setCanGoForward(true);
+            } else {
+                setCanGoForward(false);
+            }
+        })
+    }
+
 	return (
 
 		<div class="wrapper" style={{backgroundColor: 'transaprent'}}>
@@ -129,14 +145,14 @@ export default function AddVehicle() {
                                 <div class="card-body" >
 
                                     <div class="row mb-4">
-                                        <h5 class="fw-semibold fs-4">Submit the following form to add a new vehicle</h5>
+                                        <h5 class="fw-semibold fs-4">ADD NEW VEHICLE</h5>
                                     </div>
 
                                     <div class="row px-4 mb-2">
                                         <div class="mb-3 col-md-6">
                                             <label for="number">Vehicle Number</label>
                                             <input type="text" class="form-control" name="number"
-                                            onChange={(e) => setNumber(e.target.value)} value={number}/>
+                                            onChange={onChangeNumber} value={number}/>
                                         </div>
                                         <div class="mb-3 col-md-6">
                                             <label for="type">Vehicle Type</label>

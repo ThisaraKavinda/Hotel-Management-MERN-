@@ -17,6 +17,11 @@ export const getSelectedVehicle = async (id) => {
     return data;
 }
 
+export const getSelectedVehicleByNumber = async (num) => {
+    const { data } = await axios.get(baseURL + '/vehicle/getVehicleByNumber/' + num);
+    return data;
+}
+
 export const deleteVehicle = async (id) => {
     const { data } = await axios.get(baseURL + '/vehicle/delete/' + id);
     return data;

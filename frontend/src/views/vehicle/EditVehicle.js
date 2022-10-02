@@ -147,7 +147,7 @@ export default function EditVehicle() {
                                 <div class="card-body" >
 
                                     <div class="row mb-4">
-                                        <h5 class="fw-semibold fs-4">Edit the following form to update the vehicle details</h5>
+                                        <h5 class="fw-semibold fs-4">EDIT VEHICLE</h5>
                                     </div>
 
                                     <div class="row px-4 mb-2">

@@ -38,6 +38,16 @@ export const getVehicle = async (req, res) => {
     })
 }
 
+export const getVehicleByNumber = async (req, res) => {
+    let num = req.params.num;
+    await Vehicle.find({number: num}).then((vehicle)=>{
+        res.send(vehicle);
+    }).catch((err)=>{
+        console.log(err);
+        res.status(500).send({status:"Error with retrieving data",error:err.message})
+    })
+}
+
 export const editVehicle= async (req, res) => {
     let id = req.params.id;
     

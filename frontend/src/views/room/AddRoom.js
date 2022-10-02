@@ -4,7 +4,7 @@ import Select from 'react-select';
 import Switch from "react-switch";
 import swal from "sweetalert";
 
-import {addRoom} from '../../controllers/room'
+import {addRoom, getSelectedRoomByCode} from '../../controllers/room'
 
 import Navbar from '../../components/Reservation_Navbar';
 import '../../css/modern.css';
@@ -19,12 +19,26 @@ export default function AddRoom() {
     const [isAvailable, setIsAvailable] = useState(false);
     const [isAc, setIsAc] = useState(false);
 
+    const [canGoForward, setCanGoForward] = useState(false);
+
     const onChangeAvailability = () => {
         setIsAvailable(!isAvailable);
     }
 
     const onChangeIsAc = () => {
         setIsAc(!isAc);
+    }
+
+    const onChangeCode = (e) => {
+        setRoomCode(e.target.value)
+        getSelectedRoomByCode(e.target.value).then((res) => {
+            console.log(res)
+            if (res.length <= 0) {
+                setCanGoForward(true);
+            } else {
+                setCanGoForward(false);
+            }
+        })
     }
 
     const onReset = () => {
@@ -37,7 +51,9 @@ export default function AddRoom() {
     }
 
     const onAddRoom = () => {
-        if (roomCode == "" && type == "" && price == "" && facilities == "") {
+        if (!canGoForward) {
+            swal("Room Code already available in the system")
+        }else if (roomCode == "" && type == "" && price == "" && facilities == "") {
             swal("Please fill the from to proceed")
         }else if (roomCode == "") {
             swal("Please enter a room code")
@@ -108,14 +124,14 @@ export default function AddRoom() {
                                 <div class="card-body" >
 
                                     <div class="row mb-4">
-                                        <h5 class="fw-semibold fs-4">Submit the following form to add a new item</h5>
+                                        <h5 class="fw-semibold fs-4">ADD NEW ROOM</h5>
                                     </div>
 
                                     <div class="row px-4 mb-2">
                                         <div class="mb-3 col-md-6">
                                             <label for="roomCode">Room Code</label>
                                             <input type="text" class="form-control"name="roomCode" 
-                                            onChange={(e) => setRoomCode(e.target.value)} value={roomCode}/>
+                                            onChange={onChangeCode} value={roomCode}/>
                                         </div>
                                         <div class="mb-3 col-md-6 mb-2 ml-2">
                                             <label for="type">Type</label>

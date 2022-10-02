@@ -274,7 +274,7 @@ export default function EditReservation() {
                                 <div class="card-body" >
 
                                     <div class="row mb-4">
-                                        <h5 class="fw-semibold fs-4">Submit the following form to update the reservation</h5>
+                                        <h5 class="fw-semibold fs-4">EDIT RESERVATION</h5>
                                     </div>
 
                                     <div class="row px-4 mb-2">
