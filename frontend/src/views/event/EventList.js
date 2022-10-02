@@ -115,7 +115,7 @@ export default function EventList() {
                                                     Delete
                                                 </button>
                                                 <Link
-                                                    to={"/eventEdit/" + value._id}
+                                                    to={"/editEvent/" + value._id}
                                                     class="top-bar-link"
                                                 >
                                                     <button

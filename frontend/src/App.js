@@ -37,7 +37,7 @@ function App() {
     <BrowserRouter>
       <Routes>
 
-        <Route exact path="/" element={<C_M_Dashboard />} />
+        <Route exact path="/" element={<AddReservation />} />
         <Route exact path="/addRoom" element={<AddRoom />} />
         <Route exact path="/roomList" element={<RoomList />} />
         <Route exact path="/roomEdit/:id" element={<EditRoom />} />

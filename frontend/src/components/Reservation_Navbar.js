@@ -13,8 +13,8 @@ export default function Reservation_Navbar() {
             <div class="sidebar-content">
                 <div class="sidebar-user">
                     <div> <Link to='/'> <img src={require('../img/avatars/avatar.jpg')} class="img-fluid rounded-circle mb-2" /></Link></div>
-                    <div class="fw-bold">Hirusha Ravishan</div>
-                    <small>Customer Manager</small>
+                    <div class="fw-bold">Kaumadi Onel</div>
+                    <small>Human Resource Manager</small>
                     <br></br>
                     <br></br>
                     <br></br>
@@ -30,51 +30,61 @@ export default function Reservation_Navbar() {
 
                     <li class="sidebar-item ">
                         <a data-bs-target="#customer" data-bs-toggle="collapse" class="sidebar-link collapsed">
-                            <i class="align-middle me-2 fas fa-fw fa-user-friends"></i> <span class="align-middle">Customers</span>
+                            <i class="align-middle me-2 fas fa-fw fa-user-friends"></i> <span class="align-middle">Reservations</span>
                         </a>
                         <ul id="customer" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                            <li class="sidebar-item"><Link to='/customerAdd' class="sidebar-link" >Add Customer</Link></li>
-                            <li class="sidebar-item"><Link to='/customerView' class="sidebar-link" >View Customers</Link></li>
+                            <li class="sidebar-item"><Link to='/addReservation' class="sidebar-link" >Add Reservation</Link></li>
+                            <li class="sidebar-item"><Link to='/reservationList' class="sidebar-link" >Reservation List</Link></li>
                         </ul>
                     </li>
 
                     <li class="sidebar-item">
                         <a data-bs-target="#sim" data-bs-toggle="collapse" class="sidebar-link collapsed">
-                            <i class="align-middle me-2 fas fa-fw fa-file-download"></i> <span class="align-middle">Appointment</span>
+                            <i class="align-middle me-2 fas fa-fw fa-file-download"></i> <span class="align-middle">Rooms</span>
                         </a>
                         <ul id="sim" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
-                            <li class="sidebar-item"><Link to='/appointmentAdd' class="sidebar-link" >Add Appointment</Link></li>
-                            <li class="sidebar-item"><Link to='/appointmentView' class="sidebar-link" >View Appointment</Link></li>
+                            <li class="sidebar-item"><Link to='/addRoom' class="sidebar-link" >Add Room</Link></li>
+                            <li class="sidebar-item"><Link to='/roomList' class="sidebar-link" >Room List</Link></li>
                         </ul>
                     </li>
 
                     <li class="sidebar-item">
                         <a data-bs-target="#package" data-bs-toggle="collapse" class="sidebar-link collapsed">
-                            <i class="align-middle me-2 fas fa-fw fa-bookmark"></i> <span class="align-middle">Vehicle Booking</span>
+                            <i class="align-middle me-2 fas fa-fw fa-bookmark"></i> <span class="align-middle">House Keeper</span>
                         </a>
                         <ul id="package" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
-                            <li class="sidebar-item"><a class="sidebar-link" href="packagePage">Add Booking</a></li>
-                            <li class="sidebar-item"><a class="sidebar-link" href="packageTypePage">View Booking</a></li>
+                            <li class="sidebar-item"><Link to='/addHouseKeeper' class="sidebar-link" >Add House Keeper</Link></li>
+                            <li class="sidebar-item"><Link to='/houseKeeperList' class="sidebar-link" >House Keeper List</Link></li>
                         </ul>
                     </li>
 
                     <li class="sidebar-item">
-                        <a data-bs-target="#report" data-bs-toggle="collapse" class="sidebar-link collapsed">
-                            <i class="align-middle me-2 fas fa-fw fa-receipt"></i> <span class="align-middle">Report</span>
+                        <a data-bs-target="#payment" data-bs-toggle="collapse" class="sidebar-link collapsed">
+                            <i class="align-middle me-2 fas fa-fw fa-receipt"></i> <span class="align-middle">Payments</span>
                         </a>
-                        <ul id="report" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
-                            <li class="sidebar-item"><a class="sidebar-link" href="packagePage">Manage Package</a></li>
-                            <li class="sidebar-item"><a class="sidebar-link" href="packageTypePage">Manage Package Type</a></li>
+                        <ul id="payment" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
+                        <li class="sidebar-item"><Link to='/addPayment' class="sidebar-link" >Add Payments</Link></li>
+                            <li class="sidebar-item"><Link to='/paymentList' class="sidebar-link" >Payment List</Link></li>
                         </ul>
                     </li>
 
                     <li class="sidebar-item">
-                        <a data-bs-target="#profile" data-bs-toggle="collapse" class="sidebar-link collapsed">
-                            <i class="align-middle me-2 fas fa-fw fa-user"></i> <span class="align-middle">My Profile</span>
+                        <a data-bs-target="#transport" data-bs-toggle="collapse" class="sidebar-link collapsed">
+                            <i class="align-middle me-2 fas fa-fw fa-user"></i> <span class="align-middle">Transport</span>
                         </a>
-                        <ul id="profile" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
-                            <li class="sidebar-item"><a class="sidebar-link" href="packagePage">Profile Settings</a></li>
-                            <li class="sidebar-item"><a class="sidebar-link" href="packageTypePage">Sign Out</a></li>
+                        <ul id="transport" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
+                        <li class="sidebar-item"><Link to='/addVehicle' class="sidebar-link" >Add Vehicle</Link></li>
+                            <li class="sidebar-item"><Link to='/vehicleList' class="sidebar-link" >Vehicle List</Link></li>
+                        </ul>
+                    </li>
+
+                    <li class="sidebar-item">
+                        <a data-bs-target="#event" data-bs-toggle="collapse" class="sidebar-link collapsed">
+                            <i class="align-middle me-2 fas fa-fw fa-receipt"></i> <span class="align-middle">Events</span>
+                        </a>
+                        <ul id="event" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
+                        <li class="sidebar-item"><Link to='/addEvent' class="sidebar-link" >Add Events</Link></li>
+                            <li class="sidebar-item"><Link to='/eventList' class="sidebar-link" >Event List</Link></li>
                         </ul>
                     </li>
 

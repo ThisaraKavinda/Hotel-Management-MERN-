@@ -5,7 +5,9 @@ import Select from 'react-select';
 import Switch from "react-switch";
 import swal from "sweetalert";
 
-import {getSelectedEvent, editEvent} from '../../controllers/event'
+import {getSelectedEvent, editEvent, getEventsForSelectedDateAndLocation} from '../../controllers/event'
+
+import DatePicker from "react-datepicker";
 
 import Navbar from '../../components/Reservation_Navbar';
 import '../../css/modern.css';
@@ -15,57 +17,66 @@ export default function EditEvent() {
 
     const { id } = useParams();
 
+    const [eventData, setEventData] = useState({});
     const [type, setType] = useState("");
     const [customerName, setCustomerName] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
     const [address, setAddress] = useState("");
     const [totalCount, setTotalCount] = useState("");
     const [locationType, setLocationType] = useState("");
-    const [date, setDate] = useState("");
-    const [startTime, setStartTime] = useState("");
-    const [endTime, setEndtime] = useState("");
+    const [date, setDate] = useState(new Date());
+    const [startTime, setStartTime] = useState();
+    const [endTime, setEndtime] = useState();
 
     const [available, setAvailable] = useState(false);
 
     const today = new Date();
 
     useEffect(() => {
-        getSelectedRoom(id).then((result) => {
-        console.log(result);
-        setRoomData(result);
-        setRoomCode(result.name);
-        setType(result.type);
-        setPrice(result.price);
-        setFacilities(result.facilities);
-        setIsAvailable(result.isAvailable);
-        setIsAc(result.isAc);
+        getSelectedEvent(id).then((result) => {
+            console.log(result);
+            setEventData(result);
+            setType(result.type);
+            setCustomerName(result.customerName);
+            setPhoneNumber(result.phoneNumber);
+            setAddress(result.address);
+            setTotalCount(result.totalCount);
+            setLocationType(result.locationType);
+            let dateArr = result.date.split('-');
+            console.log(dateArr)
+            setDate(new Date(dateArr[0], dateArr[1] -1, dateArr[2]));
+            console.log(result.time.split(' - ')[0]);
+            setStartTime(result.time.split(' - ')[0]);
+            setEndtime(result.time.split(' - ')[1]);
         });
     }, []);
 
-    const onChangeAvailability = () => {
-        setIsAvailable(!isAvailable);
-    }
-
-    const onChangeIsAc = () => {
-        setIsAc(!isAc);
-    }
-
     const onReset = () => {
-        getSelectedRoom(id).then((result) => {
+        getSelectedEvent(id).then((result) => {
             console.log(result);
-            setRoomData(result);
-            setRoomCode(result.name);
+            setEventData(result);
             setType(result.type);
-            setPrice(result.price)
-            setFacilities(result.facilities);
-            setIsAvailable(result.isAvailable);
-            setIsAc(result.isAc);
+            setCustomerName(result.customerName);
+            setPhoneNumber(result.phoneNumber);
+            setAddress(result.address);
+            setTotalCount(result.totalCount);
+            setLocationType(result.locationType);
+            let dateArr = result.checkInDate.split('-');
+            console.log(dateArr)
+            setDate(new Date(dateArr[0], dateArr[1] -1, dateArr[2]));
+            setStartTime(result.time.split(' - ')[0]);
+            setEndtime(result.time.split(' - ')[1]);
         });
     }
 
-    const onEditRoom = () => {
-        if (!available) {
-            swal("First you have to check the availability for updated date and location")
+    const onEditRoom = async () => {
+        let x = await onCheckAvailability()
+        if (!available && locationType == eventData.locationType && date.toISOString().substring(0, 10) == eventData.date.substring(0, 10)) {
+            swal("Cannot book an event for the selected date and location. Please try again with a different location or date")
+            return;
+        }
+        if (x!= undefined && !x) {
+            swal("Cannot book an event for the selected date and location. Please try again with a different location or date")
             return;
         }
         if (customerName == "" && phoneNumber == "" && address == "" && totalCount == "" && startTime == "" && endTime == "" && type =="" ) {
@@ -97,12 +108,12 @@ export default function EditEvent() {
                 date: date.toISOString().substring(0, 10),
                 time: startTime + " - " + endTime
             }
-            editRoom(newItem, id)
+            editEvent(newItem, id)
             .then((result) => {
                 if (result != undefined) {
                     swal({
                         title: "Success!",
-                        text: "Room updated successfully",
+                        text: "Event updated successfully",
                         icon: 'success',
                         timer: 2000,
                         button: false,
@@ -132,13 +143,42 @@ export default function EditEvent() {
         }
     }
 
-    const roomTypes = [
-        { value: 'Single', label: 'Single' },
-        { value: 'Double', label: 'Double' },
-        { value: 'Triple', label: 'Triple' },
-        { value: 'Queen', label: 'Queen' },
-        { value: 'Executive ', label: 'Executive' }
+    const locationArr = [
+        { value: 'Hall A', label: 'Hall A' },
+        { value: 'Hall B', label: 'Hall B' },
+        { value: 'Outdoor', label: 'Outdoor' }
     ]
+
+    const typeArr = [
+        { value: 'Wedding', label: 'Wedding' },
+        { value: 'Birthday Party', label: 'Birthday Party' },
+        { value: 'Engagement Party', label: 'Engagement Party' },
+        { value: 'Annivesary Party', label: 'Annivesary Party' },
+        { value: 'Farewell Party', label: 'Farewell Party' },
+        { value: 'Bride to be', label: 'Annivesary Party' },
+        { value: 'Other', label: 'Other' }
+    ]
+
+    const onCheckAvailability = async () => {
+        if (locationType == eventData.locationType && date.toISOString().substring(0, 10) == eventData.date.substring(0, 10)) {
+            setAvailable(true)
+            return true
+        }else {
+            const dateString = date.toISOString();
+            console.log(dateString)
+            await getEventsForSelectedDateAndLocation(dateString.substring(0,10), locationType).then((events) => {
+                console.log(events);
+                if (events.length <= 0) {
+                    setAvailable(true)
+                    return true
+                } else {
+                    setAvailable(false)
+                    swal("Cannot book an event for the selected date and location. Please try again with a different location or date")
+                    return false;
+                }
+            })
+        } 
+    }
 
 	return (
 
@@ -155,7 +195,7 @@ export default function EditEvent() {
 
 						<div class="header">
 							<h1 class="header-title mt-1">
-								Rooms Management
+								Events Management
 							</h1>
 
 						</div>
@@ -173,7 +213,7 @@ export default function EditEvent() {
                                             <label for="zipCode">Date</label>
                                             <DatePicker
                                                 selected={date}
-                                                onChange={(date:Date) => {setDate(date); setAvailable(false)}}
+                                                onChange={(date:Date) => {setDate(date); setAvailable(false); onCheckAvailability()}}
                                                 className="form-control"
                                                 customInput={
                                                 <input
@@ -191,14 +231,12 @@ export default function EditEvent() {
                                             isClearable
                                             isSearchable
                                             options={locationArr}
-                                            onChange={(e) => {setLocationType(e.value); setAvailable(false)}}
+                                            onChange={(e) => {setLocationType(e.value); setAvailable(false); onCheckAvailability()}}
+                                            value = {
+                                                locationArr.filter(option => 
+                                                   option.label === locationType)
+                                            }
                                             />
-                                        </div>
-                                    </div>
-
-                                    <div class="row px-4 pb-3 mb-3 d-flex justify-content-start border-bottom">
-                                        <div class="mb-3 col-md-3">
-                                            <button class="btn btn-primary w-75  py-2 fw-semibold" onClick={onCheckAvailability}>Check Availability</button>
                                         </div>
                                     </div>
 
@@ -206,12 +244,12 @@ export default function EditEvent() {
                                         <div class="mb-3 col-md-6">
                                             <label for="name">Customer Name</label>
                                             <input type="text" class="form-control" name="name" 
-                                            onChange={(e) => setCustomerName(e.target.value)} value={customerName} disabled={!available}/>
+                                            onChange={(e) => setCustomerName(e.target.value)} value={customerName}/>
                                         </div>
                                         <div class="mb-3 col-md-6">
                                             <label for="name">Phone Number</label>
                                             <input type="text" class="form-control" name="name" 
-                                            onChange={(e) => setPhoneNumber(e.target.value)} value={phoneNumber} disabled={!available}/>
+                                            onChange={(e) => setPhoneNumber(e.target.value)} value={phoneNumber}/>
                                         </div>
                                     </div>
 
@@ -220,7 +258,7 @@ export default function EditEvent() {
                                         <div class="mb-3 col-md-12">
                                             <label for="address">Address</label>
                                             <input type="text" class="form-control"name="address" 
-                                            onChange={(e) => setAddress(e.target.value)} value={address} disabled={!available}/>
+                                            onChange={(e) => setAddress(e.target.value)} value={address}/>
                                         </div>
                                     </div>
 
@@ -230,25 +268,18 @@ export default function EditEvent() {
                                             <Select
                                             isClearable
                                             isSearchable
-                                            options={
-                                                [
-                                                    { value: 'Wedding', label: 'Wedding' },
-                                                    { value: 'Birthday Party', label: 'Birthday Party' },
-                                                    { value: 'Engagement Party', label: 'Engagement Party' },
-                                                    { value: 'Annivesary Party', label: 'Annivesary Party' },
-                                                    { value: 'Farewell Party', label: 'Farewell Party' },
-                                                    { value: 'Bride to be', label: 'Annivesary Party' },
-                                                    { value: 'Other', label: 'Other' }
-                                                ]
-                                            }
+                                            options={typeArr}
                                             onChange={(e) => setType(e.value)}
-                                            isDisabled={!available}
+                                            value = {
+                                                typeArr.filter(option => 
+                                                   option.label === type)
+                                            }
                                             />
                                         </div>
                                         <div class="mb-3 col-md-6">
                                             <label for="totalCount">Total Count</label>
                                             <input type="text" class="form-control" name="totalCount" 
-                                            onChange={(e) => setTotalCount(e.target.value)} value={totalCount} disabled={!available}/>
+                                            onChange={(e) => setTotalCount(e.target.value)} value={totalCount}/>
                                         </div>
                                     </div>
 
@@ -256,18 +287,18 @@ export default function EditEvent() {
                                         <div class="mb-3 col-md-6">
                                             <label for="startTime">Start time</label>
                                             <input type="time" class="form-control" name="startTime" 
-                                            onChange={(e) => setStartTime(e.target.value)} value={startTime} disabled={!available}/>
+                                            onChange={(e) => setStartTime(e.target.value)} value={startTime}/>
                                         </div>
                                         <div class="mb-3 col-md-6">
                                             <label for="endTime">End Time</label>
                                             <input type="time" class="form-control" name="endTime" 
-                                            onChange={(e) => setEndtime(e.target.value)} value={endTime} disabled={!available}/>
+                                            onChange={(e) => setEndtime(e.target.value)} value={endTime}/>
                                         </div>
                                     </div>  
                                                                                           
                                     <div class="row d-flex justify-content-center mb-2 mt-5">
                                         <div class="col-5 d-flex justify-content-center">
-                                            <button class="btn btn-primary w-75 mx-5 py-2 fw-semibold" onClick={onEditRoom}>Updated</button>
+                                            <button class="btn btn-primary w-75 mx-5 py-2 fw-semibold" onClick={onEditRoom}>Update</button>
                                             <button class="btn btn-primary w-75 mx-3 py-2 fw-semibold"
                                                 style={{ backgroundColor: '#ffffff', borderColor: '#081E3D', color: '#081E3D', marginLeft: 10, width:75 }} 
                                                 onClick={onReset} >Cancel</button>
