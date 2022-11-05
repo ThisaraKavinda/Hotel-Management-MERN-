@@ -55,6 +55,7 @@ export default function Reservation_Navbar() {
                         <ul id="package" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
                             <li class="sidebar-item"><Link to='/addHouseKeeper' class="sidebar-link" >Add House Keeper</Link></li>
                             <li class="sidebar-item"><Link to='/houseKeeperList' class="sidebar-link" >House Keeper List</Link></li>
+                            <li class="sidebar-item"><Link to='/addTask' class="sidebar-link" >Assign tasks</Link></li>
                         </ul>
                     </li>
 
@@ -73,8 +74,9 @@ export default function Reservation_Navbar() {
                             <i class="align-middle me-2 fas fa-fw fa-user"></i> <span class="align-middle">Transport</span>
                         </a>
                         <ul id="transport" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
-                        <li class="sidebar-item"><Link to='/addVehicle' class="sidebar-link" >Add Vehicle</Link></li>
+                            <li class="sidebar-item"><Link to='/addVehicle' class="sidebar-link" >Add Vehicle</Link></li>
                             <li class="sidebar-item"><Link to='/vehicleList' class="sidebar-link" >Vehicle List</Link></li>
+                            <li class="sidebar-item"><Link to='/assignVehicle' class="sidebar-link" >Assign vehicle</Link></li>
                         </ul>
                     </li>
 
