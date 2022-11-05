@@ -35,6 +35,7 @@ export default function Reservation_Navbar() {
                         <ul id="customer" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                             <li class="sidebar-item"><Link to='/addReservation' class="sidebar-link" >Add Reservation</Link></li>
                             <li class="sidebar-item"><Link to='/reservationList' class="sidebar-link" >Reservation List</Link></li>
+                            <li class="sidebar-item"><Link to='/reportReservation' class="sidebar-link" >Report</Link></li>
                         </ul>
                     </li>
 

@@ -8,7 +8,7 @@ import moment from 'moment';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable'
 
-import {getAllReservations, deleteReservation, getReservationsInAGivenPeriod} from '../../controllers/reservation';
+import {getAllReservations, deleteReservation, getReservationsInAGivenPeriod} from '../../controllers/reservation.js';
 
 import Navbar from '../../components/Reservation_Navbar';
 import '../../css/modern.css';
@@ -49,7 +49,6 @@ export default function ReportReservation() {
     let initalStartDate = year + "-" + prevMonth + "-" + day;
     let initalEndDate = year + "-" + month + "-" + day;
 
-    const [reservationList, setReservationList] = useState([]);
     const [startDate, setStartDate] = useState(initalStartDate);
     const [endDate, setEndDate] = useState(initalEndDate);
 
@@ -59,13 +58,9 @@ export default function ReportReservation() {
     const [head, setHead] = useState(true);
 
     useEffect(() => {
-        getAllReservations().then((result) => {
-            setReservationList(result);
-        //initialize datatable
-        $(document).ready(function () {
-            $("#example").DataTable();
-        });
-        });
+        setStartDate(initalStartDate);
+        setEndDate(initalEndDate);
+        appointmentReportGet();
     }, []);
 
     async function appointmentReportGet() {
@@ -76,7 +71,8 @@ export default function ReportReservation() {
             swal("End date not selected");
         } else {
             setLoading(true);
-            getReservationsInAGivenPeriod(startDate, endDate).then((result) => {
+            getReservationsInAGivenPeriod(new Date(startDate), new Date(endDate)).then((result) => {
+                console.log(result);
                 setReportList(result);
                 setHead(true);
             })
@@ -107,15 +103,15 @@ export default function ReportReservation() {
     function downloadPDF() {
 
         const doc = new jsPDF();
-        doc.setDrawColor(8, 30, 61);
+        doc.setDrawColor(15, 52, 96);
         doc.setLineWidth(70);    
         doc.line(0, 0, 1000, 0); 
-        doc.addImage(logo, 'PNG', 85, 4, 40, 10)
+        doc.addImage(logo, 'PNG', 98, 4, 17, 10)
 
         doc.setFontSize('18')
         doc.setTextColor(255,255,255);
         doc.setFont('Helvertica', 'bold')
-        doc.text("Food & Beverage Orders Report", 63, 20)
+        doc.text("Reservation Report", 81, 20)
         //
         doc.setFontSize('12')
         doc.setFont('Helvertica', 'Normal')
@@ -141,46 +137,22 @@ export default function ReportReservation() {
 
         doc.setFontSize('10')
         doc.setFont('Helvertica', 'bold')
-        doc.text("Total Orders", 14, 55)
+        doc.text("Total Reservations", 14, 55)
         doc.setFontSize('10')
         doc.setFont('Helvertica', 'Normal')
         doc.text(":  " + reportList.length, 45, 55)
         
         doc.autoTable({
             theme: "grid",
-            head: [['Reservation Id', 'NIC', 'Item count', 'Date', 'Time', 'Total Price']],
-            body: reportList.map(col => [[col.reservationId], [col.nic], [col.count], [col.date], [col.time], ["Rs. " + col.totalPrice + ".00"]]),
+            head: [['Customer Name', 'NIC', 'Phone Number', 'Checkin Date', 'Checkout Date', 'Room', 'Total Persons']],
+            body: reportList.map(col => [[col.name], [col.nic], [col.phoneNumber], [col.checkInDate.slice(0,10)],
+                [col.checkOutDate.slice(0,10)], [col.room], [Number(col.numOfAdults) + Number(col.numOfChildren)]]),
             margin: { top: 65 }
         })
-        doc.save('FoodOrderReport(' + startDate + '-' + endDate + ').pdf')
+        doc.save('ReservationReport(' + startDate + '-' + endDate + ').pdf')
     }
 
-    function deleteMyReservation(id) {
-        swal({
-        title: "Are you sure?",
-        text: "Once deleted, you will not be able to recover this reservation!",
-        icon: "warning",
-        buttons: true,
-        dangerMode: true,
-        }).then((willDelete) => {
-        if (willDelete) {
-            deleteReservation(id).then((result) => {
-            var reservations = reservationList.filter((e) => e._id !== result._id);
-            setReservationList(reservations);
-            $(document).ready(function () {
-                $("#example").DataTable();
-            });
-            });
-
-            swal("Reservation has been deleted!", {
-            icon: "success",
-            title: "Delete Successfully!",
-            buttons: false,
-            timer: 2000,
-            });
-        }
-        });
-    }
+    
 
 	return (
 
@@ -206,7 +178,7 @@ export default function ReportReservation() {
                             <div class="card">
                                 <div class="card-body mt-3 mb-2" style={{ margin: "0px" }} >
                                     <div class="row mb-2 px-4">
-                                        <h5 class="fw-semibold">Select the Start date, End date and Room to generate the report</h5>
+                                        <h5 class="fw-semibold">Select the Start date and End date to generate the report</h5>
                                     </div>
 
                                     <div class="row  align-items-center px-4 mb-2" >
@@ -221,7 +193,9 @@ export default function ReportReservation() {
                                             onChange={(e) => setEndDate(e.target.value)} defaultValue={initalEndDate} required />
                                         </div>
                                         <div class="col-md-2 " >
-                                            <button type="submit" class="btn  btn-primary " id="addCustomer" style={{ backgroundColor: '#081E3D', borderColor: '#081E3D', color: '#fff', marginLeft: 50 }} onClick={() => appointmentReportGet()} >Submit</button>
+                                            <button type="submit" class="btn  btn-primary " id="addCustomer" 
+                                                style={{ backgroundColor: '#081E3D', borderColor: '#081E3D', color: '#fff', marginLeft: 50 }} onClick={() => appointmentReportGet()} 
+                                            >Submit</button>
                                         </div>
                                     </div>
 
@@ -237,68 +211,49 @@ export default function ReportReservation() {
                             )}
                         </div>
 
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-body">
-                                    <table id="example" class="table table-striped my">
-                                        <thead>
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Phone Number</th>
-                                            <th>Check In Date</th>
-                                            <th>Check Out Date</th>
-                                            <th>Room</th>
-                                            <th >Action</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        {reservationList.map((value, index) => {
-                                            return (
-                                            <tr key={index}>
-                                                <td>{value.name}</td>
-                                                <td>{value.phoneNumber}</td>
-                                                <td>{value.checkInDate.substring(0,10)}</td>
-                                                <td>{value.checkOutDate.substring(0,10)}</td>
-                                                <td>{value.room}</td>
-                                                <td class="table-action">
-                                                <button
-                                                    class="btn btn-pill btn-danger btn-sm"
-                                                    style={{ marginLeft: 45, width: 60 }}
-                                                    onClick={() => deleteMyReservation(value._id)}
-                                                >
-                                                    Delete
-                                                </button>
-                                                <Link
-                                                    to={"/editReservation/" + value._id}
-                                                    class="top-bar-link"
-                                                >
-                                                    <button
-                                                    class="btn btn-pill btn-success btn-sm"
-                                                    style={{ marginLeft: 10, width: 60 }}
-                                                    >
-                                                    Edit
-                                                    </button>
-                                                </Link>
-                                                <Link
-                                                    to={"/viewReservation/" + value._id}
-                                                    class="top-bar-link"
-                                                >
-                                                    <button
-                                                    class="btn btn-pill btn-success btn-sm"
-                                                    style={{ marginLeft: 10, width: 60 }}
-                                                    >
-                                                    View
-                                                    </button>
-                                                </Link>
-                                                </td>
-                                            </tr>
-                                            );
-                                        })}
-                                        </tbody>
-                                    </table>
+                        {head === true ? (
+                            <div class="col-12">
+                                <div class="card">
+
+                                    <div class="card-body">
+
+                                        <table id="example" class="table table-striped my">
+
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-start">Name</th>
+                                                    <th class="text-start">NIC</th>
+                                                    <th class="text-start">Phone Number</th>
+                                                    <th class="text-start">Check In Date</th>
+                                                    <th class="text-start">Check Out Date</th>
+                                                    <th class="text-start">Room</th>
+                                                    <th class="text-start">Total Persons</th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+
+                                                {reportList.map((value, index) => {
+                                                    return <tr key={index}  id="OrderId">
+                                                        <td class="text-start">{value.name}</td>
+                                                        <td class="text-center">{value.nic}</td>
+                                                        <td class="text-center">{value.phoneNumber}</td>
+                                                        <td class="text-center">{value.checkInDate.slice(0,10)}</td>
+                                                        <td class="text-center">{value.checkOutDate.slice(0,10)}</td>
+                                                        <td class="text-center">{value.room}</td>
+                                                        <td class="text-center">{Number(value.numOfAdults) + Number(value.numOfChildren)}</td>
+                                                    </tr>
+                                                })}
+                                            </tbody>
+
+                                        </table>
+
+                                    </div>
                                 </div>
                             </div>
-                            </div>
+                        ) : (
+                            <p></p>
+                        )}
 
 					</div>
 				</main>
