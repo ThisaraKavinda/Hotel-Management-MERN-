@@ -46,6 +46,7 @@ export default function Reservation_Navbar() {
                         <ul id="sim" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
                             <li class="sidebar-item"><Link to='/addRoom' class="sidebar-link" >Add Room</Link></li>
                             <li class="sidebar-item"><Link to='/roomList' class="sidebar-link" >Room List</Link></li>
+                            <li class="sidebar-item"><Link to='/reportRoom' class="sidebar-link" >Report</Link></li>
                         </ul>
                     </li>
 
@@ -57,6 +58,7 @@ export default function Reservation_Navbar() {
                             <li class="sidebar-item"><Link to='/addHouseKeeper' class="sidebar-link" >Add House Keeper</Link></li>
                             <li class="sidebar-item"><Link to='/houseKeeperList' class="sidebar-link" >House Keeper List</Link></li>
                             <li class="sidebar-item"><Link to='/addTask' class="sidebar-link" >Assign tasks</Link></li>
+                            <li class="sidebar-item"><Link to='/reportHouseKeeper' class="sidebar-link" >Report</Link></li>
                         </ul>
                     </li>
 

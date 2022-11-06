@@ -2,10 +2,11 @@ import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import './App.css';
 
 import C_M_Dashboard from './views/reservation/Reservation_Dashboard';
-import AddRoom from './views/room/AddRoom'
-import RoomList from './views/room/RoomList.js'
-import EditRoom from './views/room/EditRoom.js'
-import ViewRoom from './views/room/ViewRoom.js'
+import AddRoom from './views/room/AddRoom';
+import RoomList from './views/room/RoomList.js';
+import EditRoom from './views/room/EditRoom.js';
+import ViewRoom from './views/room/ViewRoom.js';
+import ReportRoom from './views/room/ReportRoom.js';
 
 import AddReservation from './views/reservation/AddReservation.js';
 import ReservationList from './views/reservation/ReservationList.js';
@@ -18,6 +19,7 @@ import HouseKeeperList from './views/houseKeeper/HouseKeeperList.js';
 import ViewHouseKeeper from './views/houseKeeper/ViewHouseKeeper.js';
 import EditHouseKeeper from './views/houseKeeper/EditHouseKeeper.js';
 import AddTask from './views/houseKeeper/AddTask.js';
+import ReportHouseKeeper from './views/houseKeeper/ReportHouseKeeper.js';
 
 import AddPayment from './views/payment/AddPayment.js';
 import PaymentList from './views/payment/PaymentList.js';
@@ -45,6 +47,7 @@ function App() {
         <Route exact path="/roomList" element={<RoomList />} />
         <Route exact path="/roomEdit/:id" element={<EditRoom />} />
         <Route exact path="/viewRoom/:id" element={<ViewRoom />} />
+        <Route exact path="/reportRoom" element={<ReportRoom />} />
 
         <Route exact path="/addReservation" element={<AddReservation />} />
         <Route exact path="/reservationList" element={<ReservationList />} />
@@ -57,6 +60,7 @@ function App() {
         <Route exact path="/viewHouseKeeper/:id" element={<ViewHouseKeeper/>} />
         <Route exact path="/editHouseKeeper/:id" element={<EditHouseKeeper/>} />
         <Route exact path="/addTask" element={<AddTask />} />
+        <Route exact path="/reportHouseKeeper" element={<ReportHouseKeeper/>} />
 
         <Route exact path="/addPayment" element={<AddPayment/>} />
         <Route exact path="/paymentList" element={<PaymentList/>} />

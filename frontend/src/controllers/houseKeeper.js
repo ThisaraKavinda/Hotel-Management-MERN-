@@ -37,3 +37,8 @@ export const getAvailableHouseKeepers = async (date) => {
     const { data } = await axios.get(baseURL + '/tasks/getAvailableHouseKeepers/' + date);
     return data;
 }
+
+export const getTasksOfAHouseKeeper = async (id) => {
+    const { data } = await axios.get(baseURL + '/tasks/viewTasksOfAHouseKeeper/' + id);
+    return data;
+}

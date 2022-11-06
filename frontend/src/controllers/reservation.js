@@ -22,6 +22,11 @@ export const getSelectedReservationByNic = async (nic) => {
     return data;
 }
 
+export const getSelectedReservationByRoom = async (room) => {
+    const { data } = await axios.get(baseURL + '/reservation/getReservationByRoom/' + room);
+    return data;
+}
+
 // export const getReservationsInAGivenPeriod = async (checkInDate, checkOutDate) => {
 //     const { data } = await axios.get(baseURL + '/reservation/getReservationsInAGivenPeriod/' + checkInDate.toISOString() + "/" + checkOutDate.toISOString());
 //     return data;

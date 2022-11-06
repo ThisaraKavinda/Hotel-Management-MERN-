@@ -33,6 +33,7 @@ export const viewAllTasks = async (req, res) => {
 
 export const viewTasksOfAHouseKeeper = async (req, res) => {
     let houseKeeperId = req.params.houseKeeperId;
+    console.log(houseKeeperId)
     await AssignedTaskHouseKeeper.find({houseKeeperId: houseKeeperId}).then((tasks)=>{
         res.send(tasks);
     }).catch((err)=>{
