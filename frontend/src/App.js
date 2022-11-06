@@ -25,6 +25,7 @@ import AddPayment from './views/payment/AddPayment.js';
 import PaymentList from './views/payment/PaymentList.js';
 import ViewPayment from './views/payment/ViewPayment.js';
 import EditPayment from './views/payment/EditPayment.js';
+import ReportPayment from './views/payment/ReportPayment.js';
 
 import AddVehicle from './views/vehicle/AddVehicle.js'
 import ViewVehicle from './views/vehicle/ViewVehicle.js';
@@ -36,6 +37,7 @@ import AddEvent from './views/event/AddEvent.js';
 import EventList from './views/event/EventList.js';
 import ViewEvent from './views/event/ViewEvent.js';
 import EditEvent from './views/event/EditEvent.js';
+import ReportEvent from './views/event/ReportEvent.js';
 
 function App() {
   return (
@@ -66,6 +68,7 @@ function App() {
         <Route exact path="/paymentList" element={<PaymentList/>} />
         <Route exact path="/viewPayment/:id" element={<ViewPayment/>} />
         <Route exact path="/editPayement/:id" element={<EditPayment/>} />
+        <Route exact path="/reportPayment" element={<ReportPayment/>} />
 
         <Route exact path="/addVehicle" element={<AddVehicle/>} />
         <Route exact path="/vehicleList" element={<VehicleList/>} />
@@ -77,6 +80,7 @@ function App() {
         <Route exact path="/eventList" element={<EventList/>} />
         <Route exact path="/viewEvent/:id" element={<ViewEvent/>} />
         <Route exact path="/editEvent/:id" element={<EditEvent/>} />
+        <Route exact path="/reportEvent" element={<ReportEvent/>} />
 
       </Routes>
     </BrowserRouter>

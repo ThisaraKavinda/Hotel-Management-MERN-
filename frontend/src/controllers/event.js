@@ -12,6 +12,11 @@ export const getAllEvents = async () => {
     return data;
 }
 
+export const getEventsForSelectedLocation = async (location) => {
+    const { data } = await axios.get(baseURL + '/events/getEventsForSelectedLocation/' + location);
+    return data;
+}
+
 export const getEventsForSelectedDateAndLocation = async (date, location) => {
     const { data } = await axios.get(baseURL + '/events/getEventsForSelectedDateAndLocation/' + date + "/" + location);
     return data;

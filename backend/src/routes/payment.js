@@ -1,6 +1,8 @@
 import express, { Router } from 'express';
 
-import { addPayment, viewPayments, getPaymentById, getPaymentsByReservation, editPayment, deletePayment } from '../controllers/payment.js';
+import { 
+    addPayment, viewPayments, getPaymentById, getPaymentsByReservation, editPayment, deletePayment, viewPaymentsOfACustomer 
+} from '../controllers/payment.js';
 import {catchAsync} from '../utils/catchAsync.js';
 
 const router = express.Router();
@@ -11,5 +13,6 @@ router.get('/getPaymentById/:id',  catchAsync(getPaymentById));
 router.get('/getPaymentsByReservation/:id',  catchAsync(getPaymentsByReservation));
 router.post('/update/:id',  catchAsync(editPayment));
 router.get('/delete/:id',  catchAsync(deletePayment));
+router.get('/viewPaymentsOfACustomer/:id',  catchAsync(viewPaymentsOfACustomer));
 
 export default router;

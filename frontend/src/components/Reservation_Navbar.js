@@ -67,8 +67,9 @@ export default function Reservation_Navbar() {
                             <i class="align-middle me-2 fas fa-fw fa-receipt"></i> <span class="align-middle">Payments</span>
                         </a>
                         <ul id="payment" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
-                        <li class="sidebar-item"><Link to='/addPayment' class="sidebar-link" >Add Payments</Link></li>
+                            <li class="sidebar-item"><Link to='/addPayment' class="sidebar-link" >Add Payments</Link></li>
                             <li class="sidebar-item"><Link to='/paymentList' class="sidebar-link" >Payment List</Link></li>
+                            <li class="sidebar-item"><Link to='/reportPayment' class="sidebar-link" >Report</Link></li>
                         </ul>
                     </li>
 
@@ -88,8 +89,9 @@ export default function Reservation_Navbar() {
                             <i class="align-middle me-2 fas fa-fw fa-receipt"></i> <span class="align-middle">Events</span>
                         </a>
                         <ul id="event" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
-                        <li class="sidebar-item"><Link to='/addEvent' class="sidebar-link" >Add Events</Link></li>
+                            <li class="sidebar-item"><Link to='/addEvent' class="sidebar-link" >Add Events</Link></li>
                             <li class="sidebar-item"><Link to='/eventList' class="sidebar-link" >Event List</Link></li>
+                            <li class="sidebar-item"><Link to='/reportEvent' class="sidebar-link" >Report</Link></li>
                         </ul>
                     </li>
 

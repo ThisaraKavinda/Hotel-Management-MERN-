@@ -81,3 +81,13 @@ export const deletePayment = async (req, res) => {
         res.status(500).send({status:"Error with deleting data",error:err.message})
     })
 }
+
+export const viewPaymentsOfACustomer = async (req, res) => {
+    let id = req.params.id;
+    await Payment.find({reservationId: id}).then((payment)=>{
+        res.send(payment);
+    }).catch((err)=>{
+        console.log(err);
+        res.status(500).send({status:"Error with retrieving data",error:err.message})
+    })
+}

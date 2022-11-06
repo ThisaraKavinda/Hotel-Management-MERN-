@@ -31,3 +31,8 @@ export const editPayment = async (newItem, id) => {
     const { data } = await axios.post(baseURL + '/payments/update/' + id, newItem);
     return data;
 }
+
+export const viewPaymentsOfAReservation = async ( id) => {
+    const { data } = await axios.get(baseURL + '/payments/viewPaymentsOfACustomer/' + id);
+    return data;
+}
