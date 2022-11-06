@@ -121,7 +121,7 @@ export default function DashboardHouseKeeper() {
 
 						<div class="header">
 							<h1 class="header-title mt-1">
-								Event Management
+								HouseKeeper Management
 							</h1>
 
 						</div>

@@ -122,7 +122,7 @@ export default function DashboardRoom() {
 
 						<div class="header">
 							<h1 class="header-title mt-1">
-								Event Management
+								Room Management
 							</h1>
 
 						</div>

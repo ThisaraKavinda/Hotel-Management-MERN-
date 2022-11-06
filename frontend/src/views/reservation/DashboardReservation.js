@@ -122,7 +122,7 @@ export default function DashboardReservation() {
 
 						<div class="header">
 							<h1 class="header-title mt-1">
-								Event Management
+								Reservation Management
 							</h1>
 
 						</div>

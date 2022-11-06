@@ -122,7 +122,7 @@ export default function DashboardPayment() {
 
 						<div class="header">
 							<h1 class="header-title mt-1">
-								Event Management
+								Payment Management
 							</h1>
 
 						</div>
