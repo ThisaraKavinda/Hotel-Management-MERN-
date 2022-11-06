@@ -46,6 +46,18 @@ import EditEvent from './views/event/EditEvent.js';
 import ReportEvent from './views/event/ReportEvent.js';
 import DashboardEvent from './views/event/DashboardEvent.js';
 
+import AddFeedback from './views/feedback/addFeedback.js';
+import ViewFeedback from './views/feedback/ViewFeedback.js';
+import EditFeedback from './views/feedback/editFeedback.js';
+import FeddbackList from './views/feedback/feedbackList';
+import ReportFeedback from './views/feedback/reportFeedback';
+
+import AddRevenue from './views/revenue/addRevenue'; 
+import EditRevenue from './views/revenue/editRevenue';
+import ViewRevenue from './views/revenue/viewRevenue';
+import RevenueList from './views/revenue/revenueList';
+import ReportRevenue from './views/revenue/reportRevenue';
+
 function App() {
   return (
     <BrowserRouter>
@@ -95,6 +107,18 @@ function App() {
         <Route exact path="/editEvent/:id" element={<EditEvent/>} />
         <Route exact path="/reportEvent" element={<ReportEvent/>} />
         <Route exact path="/dashboardEvent" element={<DashboardEvent/>} />
+      
+        <Route exact path="/addFeedback" element={<AddFeedback/>} />
+        <Route exact path="/ViewFeedback/:id" element={<ViewFeedback/>} />
+        <Route exact path="/editFeedback/:id" element={<EditFeedback/>} />
+        <Route exact path="/feedbackList" element={<FeddbackList/>} />
+        <Route exact path="/reportFeedback" element={<ReportFeedback />} />
+
+        <Route exact path="/addRevenue" element={<AddRevenue/>} />
+        <Route exact path="/editRevenue/:id" element={<EditRevenue />} />
+        <Route exact path="/viewRevenue/:id" element={<ViewRevenue />} />
+        <Route exact path="/revenueList" element={<RevenueList />} /> 
+        <Route exact path="/reportRevenue" element={<ReportRevenue />} />
 
       </Routes>
     </BrowserRouter>

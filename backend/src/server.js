@@ -33,7 +33,9 @@ import vehicleRouter from './routes/vehicle.js';
 import eventRouter from './routes/event.js';
 import paymentRouter from './routes/payment.js';
 import taskRouter from './routes/assignedTaskHouseKeeper.js';
-import assignVehicle from './routes/assignVehicle.js'
+import assignVehicle from './routes/assignVehicle.js';
+import feedback from './routes/feedback.js';
+import revenue from './routes/revenue.js';
 
 // Routers use
 app.use("/customer",customerRouter);
@@ -45,6 +47,9 @@ app.use("/events", eventRouter);
 app.use("/payments", paymentRouter);
 app.use("/tasks", taskRouter);
 app.use("/assignVehicle", assignVehicle);
+app.use("/feedback", feedback);
+app.use("/revenue", revenue);
+
 
 app.listen(PORT, () => console.log(`Server listening on port ${PORT}`))
 

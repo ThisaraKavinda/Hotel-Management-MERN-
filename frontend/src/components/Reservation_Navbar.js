@@ -102,9 +102,29 @@ export default function Reservation_Navbar() {
                         </ul>
                     </li>
 
+                    <li class="sidebar-item">
+                        <a data-bs-target="#feedback" data-bs-toggle="collapse" class="sidebar-link collapsed">
+                            <i class="align-middle me-2 fas fa-fw fa-receipt"></i> <span class="align-middle">Feedbacks</span>
+                        </a>
+                        <ul id="feedback" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
+                            <li class="sidebar-item"><Link to='/dashboardEvent' class="sidebar-link" >Dashboard</Link></li>
+                            <li class="sidebar-item"><Link to='/addFeedback' class="sidebar-link" >Add Feedbacks</Link></li>
+                            <li class="sidebar-item"><Link to='/feedbackList' class="sidebar-link" >Feedback List</Link></li>
+                            <li class="sidebar-item"><Link to='/reportFeedback' class="sidebar-link" >Report</Link></li>
+                        </ul>
+                    </li>
 
-
-
+                    <li class="sidebar-item">
+                        <a data-bs-target="#revenue" data-bs-toggle="collapse" class="sidebar-link collapsed">
+                            <i class="align-middle me-2 fas fa-fw fa-receipt"></i> <span class="align-middle">Revenue</span>
+                        </a>
+                        <ul id="revenue" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
+                            <li class="sidebar-item"><Link to='/dashboardEvent' class="sidebar-link" >Dashboard</Link></li>
+                            <li class="sidebar-item"><Link to='/addRevenue' class="sidebar-link" >Add Revenue</Link></li>
+                            <li class="sidebar-item"><Link to='/revenueList' class="sidebar-link" >Revenue List</Link></li>
+                            <li class="sidebar-item"><Link to='/reportRevenue' class="sidebar-link" >Report</Link></li>
+                        </ul>
+                    </li>
 
                 </ul>
             </div>
