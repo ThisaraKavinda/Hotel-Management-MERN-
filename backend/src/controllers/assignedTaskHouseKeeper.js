@@ -70,3 +70,27 @@ export const getAvailableHouseKeepers = async (req, res) => {
     }
     return res.send(allHouseKeepers);
 }
+
+export const getTasksForAMonth = async (req, res) => {
+    const month = req.params.month;
+    AssignedTaskHouseKeeper.find({date: { $regex: "([0-9])*-" + month + "-([0-9])*" }})
+    .then((result)=>{
+        res.send(result)
+    }).catch((err)=>{
+        console.log(err);
+    })
+}
+
+export const getTasksList = async (req, res) => {   
+    let response = [];
+    for (let month=1; month<=12; month++) {
+        await AssignedTaskHouseKeeper.find({date: { $regex: "([0-9])*-" + month + "-([0-9])*" }})
+        .then((result)=>{
+            let revnue = result.length;
+            response.push(revnue);          
+        }).catch((err)=>{
+            console.log(err);
+        })
+    }
+    res.send(response);
+}

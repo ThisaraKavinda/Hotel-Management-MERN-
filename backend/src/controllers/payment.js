@@ -91,3 +91,27 @@ export const viewPaymentsOfACustomer = async (req, res) => {
         res.status(500).send({status:"Error with retrieving data",error:err.message})
     })
 }
+
+export const getPaymentsForAMonth = async (req, res) => {
+    const month = req.params.month;
+    Payment.find({date: { $regex: "([0-9])*-" + month + "-([0-9])*" }})
+    .then((result)=>{
+        res.send(result)
+    }).catch((err)=>{
+        console.log(err);
+    })
+}
+
+export const getPaymentList = async (req, res) => {   
+    let response = [];
+    for (let month=1; month<=12; month++) {
+        await Payment.find({date: { $regex: "([0-9])*-" + month + "-([0-9])*" }})
+        .then((result)=>{
+            let revnue = result.length;
+            response.push(revnue);          
+        }).catch((err)=>{
+            console.log(err);
+        })
+    }
+    res.send(response);
+}

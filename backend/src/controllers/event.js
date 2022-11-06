@@ -92,3 +92,27 @@ export const deleteEvent = async (req, res) => {
         res.status(500).send({status:"Error with deleting data",error:err.message})
     })
 }
+
+export const getEventsForAMonth = async (req, res) => {
+    const month = req.params.month;
+    Event.find({date: { $regex: "([0-9])*-" + month + "-([0-9])*" }}).distinct('orderId')
+    .then((result)=>{
+        res.send(result)
+    }).catch((err)=>{
+        console.log(err);
+    })
+}
+
+export const getEventList = async (req, res) => {   
+    let response = [];
+    for (let month=1; month<=12; month++) {
+        await Event.find({date: { $regex: "([0-9])*-" + month + "-([0-9])*" }})
+        .then((result)=>{
+            let revnue = result.length;
+            response.push(revnue);          
+        }).catch((err)=>{
+            console.log(err);
+        })
+    }
+    res.send(response);
+}

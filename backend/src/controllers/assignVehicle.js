@@ -35,7 +35,8 @@ export const viewAllAssignedVehicles = async (req, res) => {
 }
 
 export const viewAssignedOfAVehicle = async (req, res) => {
-    let vehicleId = req.params.vehicleId;
+    let vehicleId = req.params.id;
+    console.log(vehicleId);
     await AssignVehicle.find({vehicleId: vehicleId}).then((vehicles)=>{
         res.send(vehicles);
     }).catch((err)=>{
@@ -71,4 +72,28 @@ export const getAvaiableNotAssignedVehicles = async (req, res) => {
         }
     }
     return res.send(allVehicles);
+}
+
+export const getRidesForAMonth = async (req, res) => {
+    const month = req.params.month;
+    AssignVehicle.find({date: { $regex: "([0-9])*-" + month + "-([0-9])*" }})
+    .then((result)=>{
+        res.send(result)
+    }).catch((err)=>{
+        console.log(err);
+    })
+}
+
+export const getRideList = async (req, res) => {   
+    let response = [];
+    for (let month=1; month<=12; month++) {
+        await AssignVehicle.find({date: { $regex: "([0-9])*-" + month + "-([0-9])*" }})
+        .then((result)=>{
+            let revnue = result.length;
+            response.push(revnue);          
+        }).catch((err)=>{
+            console.log(err);
+        })
+    }
+    res.send(response);
 }

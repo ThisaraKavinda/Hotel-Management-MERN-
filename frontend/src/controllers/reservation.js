@@ -52,6 +52,16 @@ export const editReservation = async (newItem, id) => {
     return data;
 }
 
+export const getReservationsForAMonth = async (newItem) => {
+    const { data } = await axios.get(baseURL + '/reservation/getReservationsForAMonth/' + newItem);
+    return data;
+}
+
+export const getReservationList = async () => {
+    const { data } = await axios.get(baseURL + '/reservation/getReservationList');
+    return data;
+}
+
 const formatDate = (date) => {
     if (!date) {return ''}
     let [y,m,d] = [date.getFullYear(), date.getMonth(), date.getDate()];

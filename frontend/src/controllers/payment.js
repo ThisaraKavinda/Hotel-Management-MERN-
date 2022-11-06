@@ -36,3 +36,13 @@ export const viewPaymentsOfAReservation = async ( id) => {
     const { data } = await axios.get(baseURL + '/payments/viewPaymentsOfACustomer/' + id);
     return data;
 }
+
+export const getPaymentsForAMonth = async (newItem) => {
+    const { data } = await axios.get(baseURL + '/payments/getPaymentsForAMonth/' + newItem);
+    return data;
+}
+
+export const getPaymentList = async () => {
+    const { data } = await axios.get(baseURL + '/payments/getPaymentList');
+    return data;
+}

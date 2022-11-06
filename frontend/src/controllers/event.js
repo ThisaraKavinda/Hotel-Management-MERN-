@@ -36,3 +36,13 @@ export const editEvent = async (newItem, id) => {
     const { data } = await axios.post(baseURL + '/events/update/' + id, newItem);
     return data;
 }
+
+export const getEventsForAMonth = async (newItem) => {
+    const { data } = await axios.get(baseURL + '/events/getEventsForAMonth/' + newItem);
+    return data;
+}
+
+export const getEventList = async () => {
+    const { data } = await axios.get(baseURL + '/events/getEventList');
+    return data;
+}

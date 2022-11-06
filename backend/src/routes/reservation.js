@@ -1,7 +1,7 @@
 import express, { Router } from 'express';
 
 import {addReservation, viewReservations, getReservationByNic, getReservationById, editReservation, deleteReservation, getReservationsInAGivenPeriod,
-getCurrentReservations, getReservationByRoom } from '../controllers/reservation.js';
+getCurrentReservations, getReservationByRoom, getReservationsForAMonth, getReservationList } from '../controllers/reservation.js';
 import {catchAsync} from '../utils/catchAsync.js';
 
 const router = express.Router();
@@ -15,5 +15,7 @@ router.get("/getReservationsInAGivenPeriod/:checkInDate/:CheckOutDate", catchAsy
 router.get("/getCurrentReservations", catchAsync(getCurrentReservations));
 router.post('/update/:id',  catchAsync(editReservation));
 router.get('/delete/:id',  catchAsync(deleteReservation));
+router.get('/getReservationsForAMonth/:month', catchAsync(getReservationsForAMonth));
+router.get('/getReservationList', catchAsync(getReservationList));
 
 export default router;

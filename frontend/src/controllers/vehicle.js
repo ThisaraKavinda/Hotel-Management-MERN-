@@ -42,3 +42,18 @@ export const getAvaiableNotAssignedVehicles = async (date) => {
     const { data } = await axios.get(baseURL + '/assignVehicle/getAvaiableNotAssignedVehicles/' + date);
     return data;
 }
+
+export const getRidesForAMonth = async (newItem) => {
+    const { data } = await axios.get(baseURL + '/assignVehicle/getRidesForAMonth/' + newItem);
+    return data;
+}
+
+export const getRideList = async () => {
+    const { data } = await axios.get(baseURL + '/assignVehicle/getRideList');
+    return data;
+}
+
+export const viewAssignedOfAVehicle = async (id) => {
+    const { data } = await axios.get(baseURL + '/assignVehicle/viewAssignedOfAVehicle/' + id);
+    return data;
+}

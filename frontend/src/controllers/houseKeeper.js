@@ -42,3 +42,13 @@ export const getTasksOfAHouseKeeper = async (id) => {
     const { data } = await axios.get(baseURL + '/tasks/viewTasksOfAHouseKeeper/' + id);
     return data;
 }
+
+export const getTasksForAMonth = async (newItem) => {
+    const { data } = await axios.get(baseURL + '/tasks/getTasksForAMonth/' + newItem);
+    return data;
+}
+
+export const getTasksList = async () => {
+    const { data } = await axios.get(baseURL + '/tasks/getTasksList');
+    return data;
+}
